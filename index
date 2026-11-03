@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Absensi Guru</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f7f5;--card:#fff;--ink:#10241e;--mut:#506760;--pri:#0f766e;--pri2:#115e59;--line:#dce8e3;--soft:#e6f4f0;
+--H:#047857;--I:#b45309;--S:#0369a1;--A:#be123c;--D:#6d28d9;--r:16px}
+@media(prefers-color-scheme:dark){:root{--bg:#0c1714;--card:#14241f;--ink:#e8f3ef;--mut:#9bb5ac;--pri:#2dd4bf;--pri2:#5eead4;--line:#223a33;--soft:#183029;
+--H:#34d399;--I:#fbbf24;--S:#38bdf8;--A:#fb7185;--D:#a78bfa}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 'Plus Jakarta Sans',system-ui,sans-serif;padding:0 0 calc(96px + env(safe-area-inset-bottom))}
+header{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 20px 56px;border-radius:0 0 28px 28px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:760px;margin:0 auto}
+h1{font-size:22px;font-weight:800;margin:0;letter-spacing:-.3px}
+.sub{font-size:13px;opacity:.9;margin:2px 0 0}
+.pill{font-size:12px;background:rgba(255,255,255,.2);padding:6px 12px;border-radius:99px;white-space:nowrap}
+main{max-width:760px;margin:-36px auto 0;padding:0 16px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border-radius:99px;padding:5px;box-shadow:0 6px 20px rgba(0,0,0,.08);margin-bottom:16px}
+.seg button{min-height:44px;border:0;border-radius:99px;background:none;font:600 15px inherit;color:var(--mut);cursor:pointer;transition:background .2s,color .2s}
+.seg button[aria-selected=true]{background:var(--pri);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+label.f{font-size:13px;color:var(--mut);font-weight:600;display:block;margin-bottom:4px}
+input[type=date],input[type=time],input[type=text]{width:100%;min-height:44px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font:inherit;background:var(--bg);color:var(--ink)}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.btn{min-height:44px;padding:0 18px;border-radius:12px;border:0;background:var(--pri);color:#fff;font:600 15px inherit;cursor:pointer;transition:transform .15s,opacity .2s}
+.btn:active{transform:scale(.97)}.btn[disabled]{opacity:.55}
+.btn.ghost{background:var(--soft);color:var(--pri2)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{background:var(--soft);border-radius:12px;padding:8px;text-align:center}
+.stat b{display:block;font-size:20px}.stat span{font-size:12px;color:var(--mut)}
+.who{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+.av{width:38px;height:38px;border-radius:50%;background:var(--soft);color:var(--pri2);display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:grid;place-items:center;min-height:44px;border:1.5px solid var(--line);border-radius:12px;font-size:13px;font-weight:600;color:var(--mut);cursor:pointer;transition:all .15s}
+.chip input:focus-visible+span{outline:3px solid var(--pri);outline-offset:2px}
+.chip.H input:checked+span{background:var(--H);border-color:var(--H);color:#fff}
+.chip.I input:checked+span{background:var(--I);border-color:var(--I);color:#fff}
+.chip.S input:checked+span{background:var(--S);border-color:var(--S);color:#fff}
+.chip.A input:checked+span{background:var(--A);border-color:var(--A);color:#fff}
+.chip.D input:checked+span{background:var(--D);border-color:var(--D);color:#fff}
+.sec{border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}
+.sec h4{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--mut)}
+.xr{display:none;margin-top:8px}
+.pl{display:flex;gap:6px}.pl input{flex:1;min-width:0}.pl .btn{padding:0 12px;font-size:13px;flex:none}
+.g[data-sd=H] .sd-t,.g[data-sd=I] .sd-t,.g[data-sd=D] .sd-t,.g[data-sp=H] .sp-t,.g[data-sp=I] .sp-t,.g[data-sp=D] .sp-t{display:block}
+.fl{display:none;align-items:center;gap:10px;min-height:44px;margin-top:6px;font-size:14px}
+.fl input{width:22px;height:22px;accent-color:var(--pri)}
+.g[data-nh="1"] .fl{display:flex}
+.g[data-full="1"] .sec-p{display:none}
+.kt{display:none;margin-top:10px}.g[data-k="1"] .kt{display:block}
+.bd{margin-left:auto;font-size:12px;font-weight:600;color:var(--mut);text-align:right}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);z-index:5}
+.bar .in{max-width:760px;margin:auto;display:flex;gap:10px}.bar .btn{flex:1}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nav b{text-align:center;flex:1}.nav small{display:block;font-weight:400;color:var(--mut);font-size:13px}
+.ic{width:44px;padding:0;font-size:20px}
+.tw{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:14px}
+th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line)}
+th{background:var(--soft);font-size:12px;color:var(--mut)}
+td:first-child,th:first-child{text-align:left;padding-left:12px;position:sticky;left:0}th:first-child{background:var(--soft)}td:first-child{background:var(--card)}
+tr:last-child td{border:0}
+.pc{display:flex;align-items:center;gap:6px;min-width:90px}
+.pb{flex:1;height:8px;background:var(--soft);border-radius:9px;overflow:hidden}.pb i{display:block;height:100%;background:var(--pri);border-radius:9px;transition:width .5s}
+.c-H{color:var(--H)}.c-I{color:var(--I)}.c-S{color:var(--S)}.c-A{color:var(--A)}.c-D{color:var(--D)}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:9;max-width:90%}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.mut{color:var(--mut);font-size:13px}
+.sk{height:96px;border-radius:var(--r);background:linear-gradient(90deg,var(--soft),var(--card),var(--soft));background-size:200% 100%;animation:sh 1.2s infinite;margin-bottom:12px}
+@keyframes sh{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><h1>Absensi Guru</h1><p class="sub" id="today"></p></div><span class="pill" id="mode">…</span></div></header>
+<main>
+  <div class="seg" role="tablist">
+    <button role="tab" id="tA" aria-selected="true">Absen Harian</button>
+    <button role="tab" id="tL" aria-selected="false">Laporan</button>
+  </div>
+
+  <section id="vA">
+    <div class="card">
+      <div class="row"><div style="flex:1;min-width:150px"><label class="f" for="tgl">Tanggal</label><input type="date" id="tgl"></div>
+      <button class="btn ghost" id="semua" style="align-self:flex-end">Hadirkan semua</button></div>
+      <div class="stats" id="sum"></div>
+    </div>
+    <div id="list"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
+  </section>
+
+  <section id="vL" hidden>
+    <div class="card nav">
+      <button class="btn ghost ic" id="prev" aria-label="Periode sebelumnya">‹</button>
+      <b id="pLabel"></b>
+      <button class="btn ghost ic" id="next" aria-label="Periode berikutnya">›</button>
+    </div>
+    <div class="card"><div class="tw"><table><thead><tr><th>Guru</th><th title="Hadir">H</th><th title="Dinas">D</th><th title="Izin sehari penuh">I</th><th title="Izin saat datang">ID</th><th title="Izin saat pulang">IP</th><th title="Sakit">S</th><th title="Alpa">A</th><th>Kehadiran</th></tr></thead><tbody id="rep"></tbody></table></div>
+      <p class="mut">H Hadir · D Dinas · I Izin sehari penuh · ID Izin saat datang · IP Izin saat pulang · S Sakit · A Alpa. Kehadiran = bobot ÷ hari kerja berjalan (Senin–Jumat); H dan D bernilai 1, ID dan IP setengah hari (atur di BOBOT).</p>
+      <button class="btn" id="csv" style="width:100%">Unduh CSV</button></div>
+  </section>
+</main>
+
+<div class="bar" id="bar"><div class="in"><button class="btn" id="simpan">Simpan absensi</button></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== KONFIGURASI ===== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbxkg9PgLeN-bYWg_vtFVLAPpIqr8feLF98mi2nxeYTGGM1kEmHIM3ArZQRkI9B5PRk/exec';            // tempel URL Web App Apps Script; kosong = mode demo (data di browser)
+const HARI_KERJA = [1,2,3,4,5,6]; // 0=Minggu ... 6=Sabtu
+const ST = {H:'Hadir', I:'Izin', S:'Sakit', A:'Alpa', D:'Dinas'};
+const BOBOT = {H:1, D:1, ID:.5, IP:.5}; // nilai kehadiran per hari; yang tidak tercantum = 0
+
+/* ===== UTIL ===== */
+const $ = s => document.querySelector(s), pad = n => String(n).padStart(2,'0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ini = n => n.split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase();
+const nowHM = () => { const d = new Date(); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+const BLN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const BLN3 = BLN.map(b => b.slice(0,3));
+function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2400); }
+
+/* Periode laporan: tanggal 26 bulan lalu s.d. 25 bulan berjalan */
+function periode(y, m){ return { from: iso(new Date(y, m-1, 26)), to: iso(new Date(y, m, 25)) }; }
+
+/* ===== API (+ mode demo) ===== */
+async function api(action, p = {}, body){
+  if (!API_URL) return demo(action, p, body);
+  let r;
+  if (body) r = await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action, ...body}) });
+  else r = await fetch(API_URL + '?' + new URLSearchParams({action, ...p}));
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j.data;
+}
+function demo(a, p, b){
+  const db = JSON.parse(localStorage.getItem('demoAbs') || '[]');
+  if (a === 'guru') return ['M. Fatchurrahman, ST','M. Febriyanto, S.Pd,SD','Dodik Suprayogi, S.Pd','Qotrun Nada, S.Pd','Sri Hanah, S.Pd.SD','Dewi Maziyah, S.Pd','Nur Khamidah, S.Pd','Ratna Widya Mariana, S.Pd','Irfan Aditya Tantra, S.Pd.OR','Riviani','Nafin Nafisa H','Nikmatul Maghfiroh','Ike Aulia Izzeti'].map((n, i) => ({id:'G'+pad(i+1), nama:n}));
+  if (a === 'absensi') return db.filter(r => r.tanggal >= p.from && r.tanggal <= p.to);
+  const keep = db.filter(r => r.tanggal !== b.tanggal || !b.rows.some(x => x.id === r.id));
+  localStorage.setItem('demoAbs', JSON.stringify(keep.concat(b.rows.map(x => ({...x, tanggal:b.tanggal})))));
+  return true;
+}
+
+/* ===== STATE ===== */
+const S = { guru:[], rows:{}, rep:null };
+const t0 = new Date();
+$('#today').textContent = t0.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+$('#mode').textContent = API_URL ? 'Terhubung Sheets' : 'Mode demo';
+$('#tgl').value = iso(t0);
+S.rep = t0.getDate() >= 26 ? {y:t0.getFullYear(), m:t0.getMonth()+1} : {y:t0.getFullYear(), m:t0.getMonth()};
+
+/* ===== KLASIFIKASI HARI (gabungan status datang + pulang) ===== */
+const LBL = {H:'Hadir', D:'Dinas', I:'Izin', ID:'Izin datang', IP:'Izin pulang', S:'Sakit', A:'Alpa'};
+const KOL = ['H','D','I','ID','IP','S','A'], NH = ['I','S','A','D'];
+const adaJam = v => ['H','I','D'].includes(v);
+function klas(r){
+  const a = r.sd || '', b = r.sp || '';
+  if (!a || !b) return a || b || null;
+  if (a === b) return a;
+  if (a === 'H' && b === 'I') return 'IP';
+  if (a === 'I' && b === 'H') return 'ID';
+  return ['D','S','A','I'].find(x => a === x || b === x) || 'H';
+}
+
+/* ===== ABSEN HARIAN ===== */
+async function loadDay(){
+  const tgl = $('#tgl').value;
+  $('#list').innerHTML = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
+  try {
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from:tgl, to:tgl});
+    S.rows = {};
+    data.forEach(r => S.rows[r.id] = {sd:r.sd, masuk:r.masuk, sp:r.sp, pulang:r.pulang, ket:r.ket, full: !!r.sd && r.sd !== 'H' && r.sd === r.sp && !r.pulang});
+    renderDay();
+  } catch(e){ $('#list').innerHTML = '<div class="card">Gagal memuat: ' + esc(e.message) + '</div>'; }
+}
+const CH = (name, side) => Object.entries(ST).map(([k,v]) => `<label class="chip ${k}"><input type="radio" name="${name}" data-s="${side}" value="${k}"><span>${v}</span></label>`).join('');
+const TM = (lab, cls, key) => `<div class="xr ${cls}"><label class="f">${lab}</label><div class="pl"><input type="time" data-f="${key}"><button type="button" class="btn ghost nw" data-f="${key}" aria-label="Isi ${lab.toLowerCase()} dengan waktu sekarang">Sekarang</button></div></div>`;
+function renderDay(){
+  $('#list').innerHTML = S.guru.map(g => `<article class="card g" data-id="${g.id}">
+    <div class="who"><span class="av" aria-hidden="true">${esc(ini(g.nama))}</span><b>${esc(g.nama)}</b><span class="bd"></span></div>
+    <div class="sec"><h4>Datang</h4><div class="chips" role="radiogroup" aria-label="Status datang ${esc(g.nama)}">${CH('d'+g.id, 'sd')}</div>
+      ${TM('Jam datang', 'sd-t', 'masuk')}
+      <label class="fl"><input type="checkbox" class="full"> Berlaku seharian (tanpa sesi pulang)</label></div>
+    <div class="sec sec-p"><h4>Pulang</h4><div class="chips" role="radiogroup" aria-label="Status pulang ${esc(g.nama)}">${CH('p'+g.id, 'sp')}</div>
+      ${TM('Jam pulang', 'sp-t', 'pulang')}</div>
+    <div class="kt"><label class="f">Keterangan (wajib untuk izin / dinas)</label><input type="text" class="in-k" placeholder="Alasan atau nomor surat tugas"></div>
+  </article>`).join('');
+  document.querySelectorAll('.g').forEach(sync); summary();
+}
+function bd(c){
+  const r = S.rows[c.dataset.id] || {}, k = klas(r), e = c.querySelector('.bd');
+  e.className = 'bd c-' + (k ? k[0] : '');
+  e.textContent = !k ? 'Belum diisi' : LBL[k] + (k === 'H' ? ` · ${r.masuk || '–'} – ${r.pulang || '–'}` : '');
+}
+function sync(c){
+  const r = S.rows[c.dataset.id] ||= {}, d = c.dataset;
+  d.sd = r.sd || ''; d.sp = r.sp || ''; d.full = r.full ? '1' : '';
+  d.nh = NH.includes(r.sd) ? '1' : ''; d.k = (NH.includes(r.sd) || NH.includes(r.sp)) ? '1' : '';
+  c.querySelectorAll('input[type=radio]').forEach(i => i.checked = r[i.dataset.s] === i.value);
+  c.querySelector('.full').checked = !!r.full;
+  c.querySelectorAll('input[data-f]').forEach(i => i.value = r[i.dataset.f] || '');
+  c.querySelector('.in-k').value = r.ket || '';
+  bd(c);
+}
+function summary(){
+  let h = 0, x = 0, n = 0;
+  S.guru.forEach(g => { const k = klas(S.rows[g.id] || {}); if (!k) n++; else if (k === 'H' || k === 'D') h++; else x++; });
+  $('#sum').innerHTML = `<div class="stat"><b class="c-H">${h}</b><span>Hadir/Dinas</span></div><div class="stat"><b class="c-A">${x}</b><span>Izin/Sakit/Alpa</span></div><div class="stat"><b>${n}</b><span>Belum diisi</span></div>`;
+}
+const L = $('#list');
+L.addEventListener('change', e => {
+  const c = e.target.closest('.g'); if (!c) return;
+  const r = S.rows[c.dataset.id] ||= {}, today = $('#tgl').value === iso(new Date());
+  if (e.target.type === 'radio'){
+    const v = e.target.value;
+    if (e.target.dataset.s === 'sd'){
+      const prev = r.sd; r.sd = v;
+      if (v === 'H'){ if (r.full) r.sp = ''; r.full = false; if (today && !r.masuk) r.masuk = nowHM(); }
+      else { if (!prev || prev === 'H') r.full = true; if (r.full) r.sp = v; }
+    } else {
+      r.sp = v;
+      if (today && !r.pulang && (v === 'H' || v === 'I')) r.pulang = nowHM();
+    }
+  } else if (e.target.classList.contains('full')){
+    r.full = e.target.checked;
+    if (r.full) r.sp = r.sd; else if (r.sp === r.sd) r.sp = '';
+  } else return;
+  sync(c); summary();
+});
+L.addEventListener('input', e => {
+  const c = e.target.closest('.g'); if (!c) return;
+  const r = S.rows[c.dataset.id] ||= {};
+  if (e.target.dataset.f) r[e.target.dataset.f] = e.target.value;
+  else if (e.target.classList.contains('in-k')) r.ket = e.target.value;
+  bd(c);
+});
+L.addEventListener('click', e => {
+  const b = e.target.closest('.nw'); if (!b) return;
+  const c = b.closest('.g'), r = S.rows[c.dataset.id] ||= {};
+  r[b.dataset.f] = nowHM(); sync(c); summary();
+});
+$('#semua').onclick = () => {
+  const today = $('#tgl').value === iso(new Date());
+  S.guru.forEach(g => { const r = S.rows[g.id] ||= {}; if (!klas(r)){ r.sd = 'H'; r.full = false; if (today) r.masuk = nowHM(); } });
+  renderDay(); toast('Guru yang belum diisi ditandai Hadir saat datang');
+};
+$('#tgl').onchange = loadDay;
+$('#simpan').onclick = async () => {
+  const bad = S.guru.find(g => { const r = S.rows[g.id] || {}; return ['I','D'].some(x => r.sd === x || r.sp === x) && !(r.ket || '').trim(); });
+  if (bad){
+    toast('Isi keterangan untuk ' + bad.nama + ' (izin/dinas)');
+    const c = document.querySelector(`.g[data-id="${bad.id}"]`);
+    c.scrollIntoView({block:'center', behavior:'smooth'}); c.querySelector('.in-k').focus({preventScroll:true});
+    return;
+  }
+  const rows = S.guru.filter(g => klas(S.rows[g.id] || {})).map(g => { const r = S.rows[g.id];
+    return {id:g.id, nama:g.nama, sd:r.sd || '', masuk:adaJam(r.sd) ? (r.masuk || '') : '',
+      sp:r.full ? r.sd : (r.sp || ''), pulang:(!r.full && adaJam(r.sp)) ? (r.pulang || '') : '', ket:r.ket || ''}; });
+  if (!rows.length) return toast('Belum ada status yang dipilih');
+  const b = $('#simpan'); b.disabled = true; b.textContent = 'Menyimpan…';
+  try { await api('simpan', {}, {tanggal:$('#tgl').value, rows}); toast(rows.length + ' data tersimpan'); }
+  catch(e){ toast('Gagal menyimpan: ' + e.message); }
+  b.disabled = false; b.textContent = 'Simpan absensi';
+};
+
+/* ===== LAPORAN ===== */
+function hariKerja(from, to){
+  const end = new Date(Math.min(new Date(to + 'T00:00:00'), new Date(iso(new Date()) + 'T00:00:00')));
+  let n = 0; for (let d = new Date(from + 'T00:00:00'); d <= end; d.setDate(d.getDate()+1)) if (HARI_KERJA.includes(d.getDay())) n++;
+  return n;
+}
+async function loadRep(){
+  const end = new Date(S.rep.y, S.rep.m, 1), {from, to} = periode(end.getFullYear(), end.getMonth());
+  const f = new Date(from + 'T00:00:00'), t = new Date(to + 'T00:00:00');
+  $('#pLabel').innerHTML = `${BLN[end.getMonth()]} ${end.getFullYear()}<small>${f.getDate()} ${BLN3[f.getMonth()]} – ${t.getDate()} ${BLN3[t.getMonth()]}</small>`;
+  $('#rep').innerHTML = '<tr><td colspan="9">Memuat…</td></tr>';
+  try {
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from, to}), hk = hariKerja(from, to) || 1;
+    S.repData = S.guru.map(g => {
+      const c = Object.fromEntries(KOL.map(k => [k, 0]));
+      data.filter(r => r.id === g.id).forEach(r => { const k = klas(r); if (k in c) c[k]++; });
+      const sc = KOL.reduce((a, k) => a + c[k] * (BOBOT[k] ?? 0), 0);
+      return {nama:g.nama, ...c, pct:Math.min(100, Math.round(sc / hk * 100))};
+    });
+    S.repLabel = `${BLN[end.getMonth()]}_${end.getFullYear()}`;
+    $('#rep').innerHTML = S.repData.map(r => `<tr><td>${esc(r.nama)}</td>${KOL.map(k => `<td class="c-${k[0]}">${r[k] || '·'}</td>`).join('')}
+      <td><div class="pc"><div class="pb"><i style="width:${r.pct}%"></i></div><b>${r.pct}%</b></div></td></tr>`).join('');
+  } catch(e){ $('#rep').innerHTML = '<tr><td colspan="9">Gagal memuat: ' + esc(e.message) + '</td></tr>'; }
+}
+$('#prev').onclick = () => { S.rep.m--; loadRep(); };
+$('#next').onclick = () => { S.rep.m++; loadRep(); };
+$('#csv').onclick = () => {
+  if (!S.repData) return;
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+  const csv = ['Guru,Hadir,Dinas,Izin,Izin Datang,Izin Pulang,Sakit,Alpa,Kehadiran %', ...S.repData.map(r => [q(r.nama), ...KOL.map(k => r[k]), r.pct].join(','))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv'})); a.download = `absensi_${S.repLabel}.csv`; a.click();
+};
+
+/* ===== TAB ===== */
+function tab(lap){
+  $('#vA').hidden = lap; $('#vL').hidden = !lap; $('#bar').hidden = lap;
+  $('#tA').setAttribute('aria-selected', !lap); $('#tL').setAttribute('aria-selected', lap);
+  if (lap) loadRep();
+}
+$('#tA').onclick = () => tab(false); $('#tL').onclick = () => tab(true);
+loadDay();
+</script>
+</body>
+</html>
