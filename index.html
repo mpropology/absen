@@ -1184,6 +1184,13 @@ $('#tS').onclick = () => switchTab('tS');
 
 loadDay();
 loadDashboardData();
+
+  // Cara aman mengambil tanggal lokal YYYY-MM-DD di JavaScript tanpa bergeser zona waktu
+const getLocalISODate = (d = new Date()) => {
+  const offset = d.getTimezoneOffset();
+  const localDate = new Date(d.getTime() - (offset * 60 * 1000));
+  return localDate.toISOString().split('T')[0];
+};
 </script>
 </body>
 </html>
