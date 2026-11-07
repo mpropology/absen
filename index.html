@@ -2,503 +2,200 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#002855">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#001a38">
-<title>Sistem Manajemen Kehadiran - SD</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="theme-color" content="#1b4332">
+<meta name="color-scheme" content="light dark">
+<title>Manajemen Sekolah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #f4f4f5; 
-  --card: #ffffff;
-  --ink: #2b2b2b; 
-  --mut: #71717a;
-  --pri: #006837; 
-  --pri-hover: #004b27;
-  --gold: #fdb913; 
-  --line: #e4e4e7;
-  --soft: #f0fdf4;
-  --sidebar: #002855; 
-  --sidebar-hover: #001a38;
-  
-  --H: #006837; --I: #d97706; --S: #0284c7; --A: #e11d48; --D: #fdb913;
-  --r: 16px;
-  --font-ui: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-}
-
-html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior: none; }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font-ui); display: flex; height: 100dvh; overflow: hidden; }
-[hidden] { display: none !important; }
-.mono { font-family: var(--font-mono); }
-
-.app { display: flex; width: 100%; height: 100%; }
-.sidebar { width: 260px; background: var(--sidebar); color: #fff; display: flex; flex-direction: column; flex: none; z-index: 10; border-right: 1px solid rgba(255,255,255,0.05); padding-bottom: env(safe-area-inset-bottom); }
-.brand { padding: max(24px, env(safe-area-inset-top)) 20px 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--pri), var(--gold)); border-radius: 10px; display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(253, 185, 19, 0.2); flex:none; }
-.brand-text h1 { font-size: 16px; margin: 0; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
-.brand-text p { font-size: 11px; margin: 2px 0 0; color: #cbd5e1; font-weight: 500; }
-
-.nav-menu { padding: 20px 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; overscroll-behavior: contain; }
-.nav-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; margin: 12px 12px 4px; }
-.nav-menu button { background: transparent; border: 0; color: #cbd5e1; font: 600 14px inherit; padding: 12px 16px; border-radius: 10px; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 12px; touch-action: manipulation; user-select: none; cursor: pointer; }
-.nav-menu button[aria-selected="true"] { background: var(--pri); color: #fff; box-shadow: 0 4px 12px rgba(0, 104, 55, 0.4); border-left: 4px solid var(--gold); }
-.nav-menu button:hover { background: var(--sidebar-hover); color: #fff; }
-.nav-menu button:active { transform: scale(0.97); }
-
-.main-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; overscroll-behavior: contain; }
-.topbar { background: var(--card); padding: max(16px, env(safe-area-inset-top)) 32px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; z-index: 5; }
-.topbar-info h2 { margin: 0; font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -0.5px; }
-.topbar-info p { margin: 4px 0 0; font-size: 13px; color: var(--mut); font-weight: 500; }
-.topbar-right { display: flex; align-items: center; gap: 20px; }
-.search-bar { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px 16px; font-size: 15px; min-width: 140px; font-family: var(--font-ui); color: var(--ink); }
-select.search-bar { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2371717a%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 10px auto; padding-right: 32px; }
-.user-profile { display: flex; align-items: center; gap: 10px; }
-.user-avatar { width: 36px; height: 36px; background: var(--gold); color: var(--sidebar); border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 14px; }
-.user-text b { display: block; font-size: 13px; line-height: 1.2; }
-.user-text span { font-size: 11px; color: var(--mut); }
-
-.content { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 24px 32px calc(140px + env(safe-area-inset-bottom)); }
-
-.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03); margin-bottom: 24px; }
-.card-title { font-size: 15px; font-weight: 800; margin: 0 0 4px; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
-.card-subtitle { font-size: 12px; color: var(--mut); margin: 0 0 16px; }
-
-.dash-grid-top { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
-.stat-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s, box-shadow 0.2s; }
-.stat-card.interactive { cursor: pointer; }
-.stat-card.interactive:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.06); border-color: var(--gold); }
-.stat-card::after { content: ""; position: absolute; bottom: 0; left: 16px; right: 16px; height: 3px; border-radius: 3px 3px 0 0; }
-.stat-card.c-blue::after { background: var(--sidebar); }
-.stat-card.c-green::after { background: var(--H); }
-.stat-card.c-gold::after { background: var(--gold); }
-.stat-card.c-red::after { background: var(--A); }
-.stat-card span.label { font-size: 11px; font-weight: 800; color: var(--mut); text-transform: uppercase; letter-spacing: 0.5px; }
-.stat-val { font-size: 28px; font-weight: 800; margin: 8px 0; color: var(--ink); line-height: 1; display: flex; justify-content: space-between; align-items: center; }
-.stat-trend { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
-.stat-trend.up { background: var(--soft); color: var(--H); }
-.stat-trend.down { background: #ffe4e6; color: var(--A); }
-.stat-desc { font-size: 12px; color: var(--mut); }
-
-.dash-grid-mid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.donut-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px; }
-.donut { width: 140px; height: 140px; border-radius: 50%; background: #e4e4e7; position: relative; margin-bottom: 20px; transition: background 0.5s ease; }
-.donut::after { content: ""; position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; background: var(--card); border-radius: 50%; }
-.legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; width: 100%; font-size: 12px; font-weight: 600; }
-.legend-item { display: flex; align-items: center; justify-content: space-between; }
-.legend-dot { display: flex; align-items: center; gap: 6px; color: var(--mut); }
-.legend-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-
-.list-ui { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.item-ui { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
-.item-ui:last-child { border: 0; padding-bottom: 0; }
-.item-ui .av { width: 36px; height: 36px; border-radius: 50%; background: #f3f4f6; color: #4b5563; display: grid; place-items: center; font-size: 12px; font-weight: 800; flex:none; }
-.item-ui-info { flex: 1; min-width: 0; }
-.item-ui-info b { display: block; font-size: 14px; color: var(--ink); }
-.item-ui-info span { display: block; font-size: 12px; color: var(--mut); margin-top: 2px; }
-
-.badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
-.badge.S { background: #e0f2fe; color: var(--S); }
-.badge.I { background: #fef3c7; color: var(--I); }
-.badge.A { background: #ffe4e6; color: var(--A); }
-.badge.T { background: #ffedd5; color: #ea580c; } 
-.badge.P { background: var(--sidebar); color: #fff; } 
-.badge.Denda { background: #ffe4e6; color: #e11d48; border: 1px solid #fecdd3; font-family: var(--font-mono); }
-
-.medal { font-size: 20px; margin-right: 4px; line-height: 1; }
-.medal-1 { filter: drop-shadow(0 2px 4px rgba(253,185,19,0.4)); }
-.medal-2 { filter: drop-shadow(0 2px 4px rgba(156,163,175,0.4)); }
-.medal-3 { filter: drop-shadow(0 2px 4px rgba(180,83,9,0.4)); }
-.rank-num { width: 24px; height: 24px; border-radius: 50%; background: var(--soft); color: var(--pri); display: grid; place-items: center; font-size: 11px; font-weight: 800; margin-right: 4px; }
-
-.dash-grid-bot { display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap: 16px; }
-.comp-list { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
-.comp-item { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-.comp-item:last-child { border: 0; padding: 0; }
-.comp-item span { color: var(--mut); display: flex; align-items: center; gap: 8px; }
-.comp-item span::before { content: "✓"; display: grid; place-items: center; width: 16px; height: 16px; border: 1.5px solid currentColor; border-radius: 50%; font-size: 10px; }
-.comp-item.warn span::before { content: "!"; color: var(--A); border-color: var(--A); }
-.comp-item b { color: var(--ink); font-size: 14px; }
-.comp-item.warn b { color: var(--A); }
-
-.row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; margin-bottom:16px; }
-label.f { font-size: 12px; color: var(--mut); font-weight: 700; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-input[type=date], input[type=time], input[type=text], input[type=number] { width: 100%; min-height: 48px; border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 16px; background: var(--bg); color: var(--ink); transition: border-color 0.2s; font-size: 16px !important; font-family: var(--font-ui); }
-input:focus-visible { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(253, 185, 19, 0.15); }
-
-.btn { min-height: 48px; padding: 0 20px; border-radius: 10px; border: 0; background: var(--pri); color: #fff; font: 700 14px inherit; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
-.btn[disabled] { opacity: 0.6; pointer-events: none; }
-.btn.ghost { background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
-.btn.gold { background: var(--gold); color: var(--sidebar); }
-.btn:active { transform: scale(0.97); }
-
-.stats-banner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-b { background: var(--bg); border-radius: 12px; padding: 16px; text-align: center; border: 1px solid var(--line); border-bottom: 3px solid var(--line); }
-.stat-b.H { border-bottom-color: var(--H); } .stat-b.A { border-bottom-color: var(--A); } .stat-b.T { border-bottom-color: #ea580c; }
-.stat-b b { display: block; font-size: 24px; font-weight: 800; line-height: 1; margin-bottom: 4px; font-family: var(--font-mono); }
-.stat-b span { font-size: 11px; color: var(--mut); font-weight: 700; text-transform: uppercase; }
-
-.g { display: flex; flex-direction: column; gap: 12px; border-left: 3px solid transparent; transition: border-color 0.2s; position: relative; }
-.who { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
-.av { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--soft), var(--line)); color: var(--pri); display: grid; place-items: center; font-weight: 800; font-size: 14px; flex: none; border: 1px solid rgba(0, 104, 55, 0.1); }
-.who b { font-size: 15px; font-weight: 700; color: var(--ink); }
-.bd { margin-left: auto; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 99px; background: var(--bg); border: 1px solid var(--line); }
-.piket-info { display: flex; gap: 6px; }
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { flex: 1; min-width: 50px; }
-.chip input { position: absolute; opacity: 0; pointer-events: none; }
-.chip span { display: flex; align-items: center; justify-content: center; min-height: 44px; border: 1.5px solid var(--line); border-radius: 8px; font-size: 14px; font-weight: 700; color: var(--mut); transition: all 0.15s; background: var(--card); touch-action: manipulation; user-select: none; cursor: pointer; }
-.chip input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
-.chip.H input:checked+span{background:var(--H);border-color:var(--H);color:#fff;}
-.chip.I input:checked+span{background:var(--I);border-color:var(--I);color:#fff;}
-.chip.S input:checked+span{background:var(--S);border-color:var(--S);color:#fff;}
-.chip.A input:checked+span{background:var(--A);border-color:var(--A);color:#fff;}
-.chip.D input:checked+span{background:var(--D);border-color:var(--D);color:var(--sidebar);}
-.chip span:active { transform: scale(0.95); }
-
-.sec { display: flex; flex-direction: column; gap: 8px; }
-.sec h4 { margin: 0; font-size: 12px; font-weight: 800; color: var(--ink); text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; }
-.xr { display: none; background: var(--bg); padding: 12px; border-radius: 10px; border: 1px solid var(--line); }
-.pl { display: flex; gap: 8px; }
-.pl input { flex: 1; min-width: 0; font-family: var(--font-mono); }
+:root{--bg:#f1f2ee;--card:#fff;--ink:#23272b;--mut:#5e656b;--pri:#2d6a4f;--pri2:#1b4332;--gold:#c9a227;--onpri:#fff;--line:#dfe2dc;--soft:#e8f0ea;
+--H:#2d6a4f;--I:#a16207;--S:#0369a1;--A:#b91c1c;--D:#6d28d9;--r:16px;--ease-out:cubic-bezier(0.23,1,0.32,1)}
+@media(prefers-color-scheme:dark){:root{--bg:#14171a;--card:#1d2226;--ink:#eceee9;--mut:#9aa3a0;--pri:#52b788;--pri2:#95d5b2;--gold:#e0b73a;--onpri:#10231a;--line:#2b3238;--soft:#222c27;--H:#5fd08f;--I:#e0b73a;--S:#5bb8f0;--A:#f87171;--D:#b79cf5}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 'Plus Jakarta Sans',system-ui,sans-serif;padding:0 0 calc(96px + env(safe-area-inset-bottom))}
+header{background:linear-gradient(135deg,#1b4332,#2d6a4f);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 20px 56px;border-radius:0 0 28px 28px;border-bottom:4px solid var(--gold)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:760px;margin:0 auto}
+h1{font-size:22px;font-weight:800;margin:0;letter-spacing:-.3px}
+.sub{font-size:13px;opacity:.9;margin:2px 0 0}
+.pill{font-size:12px;background:rgba(255,255,255,.2);padding:6px 12px;border-radius:99px;white-space:nowrap}
+main{max-width:760px;margin:-36px auto 0;padding:0 16px}
+.seg{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;background:var(--card);border-radius:99px;padding:5px;box-shadow:0 6px 20px rgba(0,0,0,.08);margin-bottom:16px}
+.seg button{min-height:44px;border:0;border-radius:99px;background:none;font:600 15px/1.2 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--mut);cursor:pointer;transition:background .2s,color .2s}
+.seg button[aria-selected=true]{background:var(--pri);color:var(--onpri)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+label.f{font-size:13px;color:var(--mut);font-weight:600;display:block;margin-bottom:4px}
+input[type=date],input[type=time],input[type=text]{width:100%;min-height:44px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font:inherit;background:var(--bg);color:var(--ink)}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.btn{min-height:44px;padding:0 18px;border-radius:12px;border:0;background:var(--pri);color:var(--onpri);font:600 15px/1.2 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;transition:transform .15s,opacity .2s}
+.btn:active{transform:scale(.97)}.btn[disabled]{opacity:.55}
+.btn.ghost{background:var(--soft);color:var(--pri2)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{background:var(--soft);border-radius:12px;padding:8px;text-align:center}
+.stat b{display:block;font-size:20px}.stat span{font-size:12px;color:var(--mut)}
+.who{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+.av{width:38px;height:38px;border-radius:50%;background:var(--soft);color:var(--pri2);display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:grid;place-items:center;min-height:44px;border:1.5px solid var(--line);border-radius:12px;font-size:13px;font-weight:600;color:var(--mut);cursor:pointer;transition:all .15s}
+.chip input:focus-visible+span{outline:3px solid var(--pri);outline-offset:2px}
+.chip.H input:checked+span{background:var(--H);border-color:var(--H);color:var(--onpri)}
+.chip.I input:checked+span{background:var(--I);border-color:var(--I);color:var(--onpri)}
+.chip.S input:checked+span{background:var(--S);border-color:var(--S);color:var(--onpri)}
+.chip.A input:checked+span{background:var(--A);border-color:var(--A);color:var(--onpri)}
+.chip.D input:checked+span{background:var(--D);border-color:var(--D);color:var(--onpri)}
+.sec{border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}
+.sec h4{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--mut)}
+.xr{display:none;margin-top:8px}
+.pl{display:flex;gap:6px}.pl input{flex:1;min-width:0}.pl .btn{padding:0 12px;font-size:13px;flex:none}
 .g[data-sd=H] .sd-t,.g[data-sd=I] .sd-t,.g[data-sd=D] .sd-t,.g[data-sp=H] .sp-t,.g[data-sp=I] .sp-t,.g[data-sp=D] .sp-t{display:block}
-.fl{display:none;align-items:center;gap:10px;min-height:48px;font-size:14px; font-weight: 600; padding: 6px 12px; background: var(--soft); border-radius: 10px; border: 1px solid rgba(0,104,55,0.15); color: var(--pri); touch-action: manipulation;}
+.fl{display:none;align-items:center;gap:10px;min-height:44px;margin-top:6px;font-size:14px}
+.fl input{width:22px;height:22px;accent-color:var(--pri)}
 .g[data-nh="1"] .fl{display:flex}
 .g[data-full="1"] .sec-p{display:none}
-.kt{display:none; margin-top: 8px;}
-.g[data-k="1"] .kt{display:block}
-
-.bar { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 32px calc(20px + env(safe-area-inset-bottom)); background: rgba(255,255,255,0.95); border-top: 1px solid var(--line); z-index: 5; display: flex; justify-content: flex-end; backdrop-filter: blur(10px); }
-.bar .in { width: 100%; max-width: 400px; margin-left: auto; }
-.bar .btn { width: 100%; font-size: 16px; height: 52px; border-radius: 12px; }
-.tw { overflow-x: auto; border-radius: 12px; border: 1px solid var(--line); background: var(--card); overscroll-behavior-x: contain; }
-table.lap { border-collapse: collapse; width: 100%; min-width: 700px; font-size: 13px; font-family: var(--font-mono); }
-table.lap th, table.lap td { padding: 14px 16px; text-align: center; border-bottom: 1px solid var(--line); }
-table.lap th { background: var(--bg); font-weight: 800; color: var(--mut); text-transform: uppercase; font-size: 11px; font-family: var(--font-ui); }
-table.lap td:first-child, table.lap th:first-child { text-align: left; position: sticky; left: 0; z-index: 2; font-weight: 700; color: var(--ink); }
-table.lap th:first-child { background: var(--bg); }
-table.lap td:first-child { background: var(--card); border-right: 1px solid var(--line); font-family: var(--font-ui); }
-
-.pc { display: flex; align-items: center; gap: 8px; min-width: 120px; font-family: var(--font-ui); }
-.pb { flex: 1; height: 8px; background: var(--line); border-radius: 99px; }
-.pb i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--pri)); border-radius: 99px; transition: width 0.5s; }
-
-.modal-overlay { position: fixed; inset: 0; background: rgba(0, 40, 85, 0.45); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.modal-overlay.show { opacity: 1; pointer-events: auto; }
-.modal-card { background: var(--card); border-radius: var(--r); width: 100%; max-width: 500px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.15); transform: translateY(20px); transition: transform 0.3s; }
-.modal-overlay.show .modal-card { transform: translateY(0); }
-.modal-head { padding: 20px 24px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-.modal-head h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--sidebar); }
-.modal-close { background: transparent; border: 0; font-size: 24px; line-height: 1; cursor: pointer; color: var(--mut); padding: 0 8px; }
-.modal-body { padding: 24px; overflow-y: auto; flex: 1; overscroll-behavior: contain; }
-
-.c-H { color: var(--H) !important; } .c-I { color: var(--I) !important; } .c-S { color: var(--S) !important; } .c-A { color: var(--A) !important; } .c-D { color: var(--D) !important; }
-.toast { position: fixed; right: 32px; bottom: max(32px, env(safe-area-inset-bottom)); background: var(--ink); color: var(--bg); padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: all 0.4s; z-index: 99; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; }
-.toast.on { opacity: 1; transform: translateY(0); }
-.sk{height:120px;border-radius:var(--r);background:linear-gradient(90deg,var(--bg),var(--card),var(--bg));background-size:200% 100%;animation:sh 1.5s infinite;margin-bottom:16px;}
+.kt{display:none;margin-top:10px}.g[data-k="1"] .kt{display:block}
+.bd{margin-left:auto;font-size:12px;font-weight:600;color:var(--mut);text-align:right}
+.g.ragu{border-color:var(--I);box-shadow:0 0 0 2px var(--I)}.g.ragu .bd::after{content:' · cek ulang'}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);z-index:5}
+.bar .in{max-width:760px;margin:auto;display:flex;gap:10px}.bar .btn{flex:1}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nav b{text-align:center;flex:1}.nav small{display:block;font-weight:400;color:var(--mut);font-size:13px}
+.ic{width:44px;padding:0;font-size:20px}
+.tw{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:14px}
+th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line)}
+th{background:var(--soft);font-size:12px;color:var(--mut)}
+td:first-child,th:first-child{text-align:left;padding-left:12px;position:sticky;left:0}th:first-child{background:var(--soft)}td:first-child{background:var(--card)}
+tr:last-child td{border:0}
+.pc{display:flex;align-items:center;gap:6px;min-width:90px}
+.pb{flex:1;height:8px;background:var(--soft);border-radius:9px;overflow:hidden}.pb i{display:block;height:100%;background:var(--pri);border-radius:9px;transition:width .5s}
+.c-H{color:var(--H)}.c-I{color:var(--I)}.c-S{color:var(--S)}.c-A{color:var(--A)}.c-D{color:var(--D)}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:9;max-width:90%}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.mut{color:var(--mut);font-size:13px}
+.sk{height:96px;border-radius:var(--r);background:linear-gradient(90deg,var(--soft),var(--card),var(--soft));background-size:200% 100%;animation:sh 1.2s infinite;margin-bottom:12px}
 @keyframes sh{to{background-position:-200% 0}}
-
-@media (hover: hover) and (pointer: fine) {
-  .btn:hover { background: var(--pri-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 104, 55, 0.2); }
-  .btn.ghost:hover { background: var(--line); box-shadow: none; transform: none; }
-  .btn.gold:hover { background: #e0a30b; box-shadow: 0 4px 12px rgba(253, 185, 19, 0.25); }
-  .g:hover { border-left-color: var(--gold); }
-  table.lap tr:hover td { background: var(--soft); }
-}
-
-@media (max-width: 900px) {
-  .app { flex-direction: column; }
-  .sidebar { width: 100%; flex-direction: row; align-items: center; padding: max(12px, env(safe-area-inset-top)) 16px 12px; border-bottom: 1px solid var(--line); border-right: none; }
-  .brand { padding: 0; border: 0; }
-  .brand-text p, .nav-label { display: none; }
-  .nav-menu { flex-direction: row; padding: 0; justify-content: flex-end; align-items: center; gap: 8px;}
-  .nav-menu button { padding: 8px 12px; border-radius: 8px; font-size: 13px; }
-  .topbar { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
-  .topbar-right { width: 100%; justify-content: space-between; }
-  .search-bar { width: auto; flex: 1; margin-right: 12px; }
-  .content { padding: 16px 16px calc(100px + env(safe-area-inset-bottom)); }
-  .dash-grid-top, .dash-grid-mid, .dash-grid-bot { grid-template-columns: 1fr; }
-  .stats-banner { grid-template-columns: repeat(2, 1fr); }
-  .bar { padding: 16px; position: fixed; }
-}
+@media(prefers-reduced-motion:reduce){.rise{animation-name:fade}.rg{animation:none}.sk{animation:none}}
+/* ===== baseline mobile-native ===== */
+html{-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+button,a,[role=button]{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.seg::-webkit-scrollbar{display:none}.seg button{flex:none;padding:0 16px;scroll-snap-align:center}
+.btn:active,.seg button:active{transform:scale(.97)}
+/* ===== animasi (transform/opacity, stagger 45ms) ===== */
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+@keyframes fade{from{opacity:0}}
+@keyframes ring{from{stroke-dashoffset:264}}
+.rise{animation:rise .3s var(--ease-out) both;animation-delay:calc(var(--i,0)*45ms)}
+/* ===== dasbor ===== */
+.hero{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#1b4332,#2d6a4f);color:#fff;border:0;border-bottom:3px solid var(--gold)}
+.hero p{margin:2px 0 0;opacity:.88;font-size:14px}
+.ring{width:96px;height:96px;flex:none}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}.tr{stroke:rgba(255,255,255,.22)}
+.rg{stroke:var(--gold);stroke-dasharray:264;transform:rotate(-90deg);transform-origin:50% 50%;animation:ring .6s var(--ease-out) both}
+.ring text{fill:#fff;font:800 22px 'Plus Jakarta Sans',system-ui,sans-serif}
+.kp{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+@media(min-width:560px){.kp{grid-template-columns:repeat(4,1fr)}}
+.kc{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:var(--r);padding:12px 14px}
+.kc b{display:block;font-size:26px;line-height:1.1}.kc span{font-size:13px;color:var(--mut)}
+h3{margin:0 0 8px;font-size:16px}h4{margin:12px 0 4px;font-size:13px;color:var(--mut);font-weight:600}
+ul{margin:0;padding-left:18px;font-size:14px}
+.trend{width:100%;height:auto}.trend text{fill:var(--mut);font:600 9px 'Plus Jakarta Sans',system-ui,sans-serif;text-anchor:middle}
+/* ===== tracker ===== */
+.tk{min-width:0;width:max-content}
+.tk th,.tk td{padding:4px 3px;border:0;font-size:11px}
+.tk td:first-child,.tk th:first-child{padding:4px 8px 4px 12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.hc{display:block;width:20px;height:20px;border-radius:6px;background:var(--soft);border:1px solid var(--line)}
+.k-H{background:var(--H);border-color:var(--H)}.k-D{background:var(--D);border-color:var(--D)}.k-I{background:var(--I);border-color:var(--I)}
+.k-S{background:var(--S);border-color:var(--S)}.k-A{background:var(--A);border-color:var(--A)}.k-ID,.k-IP{background:var(--I);border-color:var(--I);opacity:.6}.we{opacity:.35}
+.lg{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:12px;color:var(--mut);margin:10px 0 0}.lg .hc{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px}
+.lt{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-left:3px}
+/* ===== guru & profil ===== */
+.gc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px;min-height:64px;font:inherit;color:inherit;cursor:pointer;transition:transform .15s var(--ease-out)}
+.gc:active{transform:scale(.98)}
+.gn{flex:1;min-width:0;display:flex;flex-direction:column}.gn b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gn small{color:var(--mut);font-size:13px}
+.gp{font-weight:800;color:var(--pri)}
+.av.big{width:56px;height:56px;font-size:20px;background:rgba(255,255,255,.18);color:#fff}
+.hero .pct{margin-left:auto;font:800 28px 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--gold)}
+a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:12px}
+.hm{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.hh{text-align:center;font-size:11px;color:var(--mut);font-weight:600}
+.hd{display:grid;place-items:center;height:36px;border-radius:10px;font-size:13px;font-weight:600;background:var(--soft);color:var(--mut);border:1px solid var(--line)}
+.hd.k-H,.hd.k-D,.hd.k-I,.hd.k-S,.hd.k-A,.hd.k-ID,.hd.k-IP{color:var(--onpri)}
 </style>
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon">SD</div>
-      <div class="brand-text">
-        <h1>Manajemen SD</h1>
-        <p>Sistem Kehadiran</p>
-      </div>
-    </div>
-    <nav class="nav-menu" role="tablist">
-      <div class="nav-label">Utama</div>
-      <button role="tab" id="tD" aria-selected="true">Dasbor</button>
-      
-      <div class="nav-label">Manajemen</div>
-      <button role="tab" id="tA" aria-selected="false">Input Absensi</button>
-      <button role="tab" id="tL" aria-selected="false">Laporan</button>
-      <button role="tab" id="tS" aria-selected="false">Pengaturan</button>
-    </nav>
-  </aside>
-
-  <div class="main-wrap">
-    <header class="topbar">
-      <div class="topbar-info">
-        <h2 id="pageTitle">Dashboard Leaderboard</h2>
-        <p id="todayTitle">Peringkat kedisiplinan & evaluasi harian</p>
-      </div>
-      <div class="topbar-right">
-        <input type="date" class="search-bar" id="dashDateContext" title="Pilih Tanggal Dasbor">
-        <div class="user-profile">
-          <div class="user-avatar">AK</div>
-          <div class="user-text">
-            <b>Admin</b>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main class="content">
-      <!-- ================= V1: DASHBOARD UTAMA ================= -->
-      <section id="vD">
-        <div class="dash-grid-top">
-          <div class="stat-card c-blue interactive" id="btnTotalGuru" title="Klik untuk lihat grafik mingguan & bulanan">
-            <span class="label">Total Guru</span>
-            <div class="stat-val"><span id="dashTotalGuru" class="mono">-</span></div>
-            <div class="stat-desc">Klik untuk detail kehadiran</div>
-          </div>
-          <div class="stat-card c-green">
-            <span class="label">Hadir / Dinas</span>
-            <div class="stat-val"><span id="dashHadirGuru" class="mono">-</span> <div class="stat-trend up mono" id="dashPctGuru">-%</div></div>
-            <div class="stat-desc" id="dashDescGuru">Hari ini</div>
-          </div>
-          <div class="stat-card c-gold interactive" id="btnTelatGuru" title="Klik untuk list guru terlambat">
-            <span class="label">Terlambat Hari Ini</span>
-            <div class="stat-val"><span id="dashTelatGuru" class="mono">0</span></div>
-            <div class="stat-desc">Klik untuk daftar pelanggar</div>
-          </div>
-          <div class="stat-card c-red interactive" id="btnEstimasiDenda" title="Klik untuk rincian denda">
-            <span class="label">Estimasi Denda (Bulan Ini)</span>
-            <div class="stat-val" style="color:var(--A); font-size:24px;"><span id="dashTotalDenda" class="mono">Rp 0</span></div>
-            <div class="stat-desc">Klik untuk detail denda guru</div>
-          </div>
-        </div>
-
-        <div class="dash-grid-mid">
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">Status Hari Ini</h3>
-            <p class="card-subtitle">Distribusi absensi harian</p>
-            <div class="donut-wrap">
-              <div class="donut" id="chartGuru"></div>
-              <div class="legend-grid">
-                <div class="legend-item"><span class="legend-dot" style="color:var(--H)">Hadir</span> <b id="lgH" class="mono">0</b></div>
-                <div class="legend-item"><span class="legend-dot" style="color:var(--I)">Izin/Dinas</span> <b id="lgI" class="mono">0</b></div>
-                <div class="legend-item"><span class="legend-dot" style="color:var(--S)">Sakit</span> <b id="lgS" class="mono">0</b></div>
-                <div class="legend-item"><span class="legend-dot" style="color:var(--A)">Alpa</span> <b id="lgA" class="mono">0</b></div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">🚀 Top Keberangkatan</h3>
-            <p class="card-subtitle">Guru yang tiba paling awal</p>
-            <div class="list-ui" id="dashFastestList">
-               <div style="font-size:13px; color:var(--mut);">Memuat kedatangan tercepat...</div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-bottom:0; overflow-y:auto; max-height: 380px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-              <h3 class="card-title" style="margin:0">⚠️ Evaluasi Hari Ini</h3>
-            </div>
-            <p class="card-subtitle">Denda bervariasi sesuai jenis guru (Lihat Pengaturan)</p>
-            <div class="list-ui" id="dashAbsenList"></div>
-          </div>
-        </div>
-
-        <div class="dash-grid-bot">
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">🏆 Leaderboard Bulanan</h3>
-            <p class="card-subtitle">Diurutkan berdasarkan kehadiran terbaik</p>
-            <div class="list-ui" id="dashLeaderboard">
-               <div style="font-size:13px; color:var(--mut); padding: 20px; text-align:center;">
-                  Menghitung statistik bulanan...
-               </div>
-            </div>
-          </div>
-          
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">Ringkasan Kepatuhan</h3>
-            <p class="card-subtitle">Kasus pelanggaran & potongan disiplin</p>
-            <div class="comp-list" style="margin-top:8px;">
-              <div class="comp-item"><span>Rata-rata Kehadiran</span> <b id="compGuru" class="mono">...</b></div>
-              <div class="comp-item warn"><span>Total Keterlambatan</span> <b id="compTelat" class="mono">...</b></div>
-              <div class="comp-item warn"><span>Total Pulang Awal</span> <b id="compPulangAwal" class="mono">...</b></div>
-              <div class="comp-item" style="margin-top:8px; border:0; padding-bottom:0;">
-                 <div style="width:100%; background:#fff1f2; border:1px solid #fecdd3; border-radius:12px; padding:16px; text-align:center;">
-                    <span style="display:block; color:#be123c; font-size:12px; font-weight:800; text-transform:uppercase; margin-bottom:4px;">Total Denda Bulan Ini</span>
-                    <b style="color:#e11d48; font-size:24px;" id="compDendaBox" class="mono">Rp 0</b>
-                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">📅 Jadwal & Aturan Piket</h3>
-            <p class="card-subtitle">Transparansi disiplin dan penugasan</p>
-            <div style="font-size:12px; color:var(--sidebar); margin-bottom:16px; background:var(--soft); padding:12px 14px; border-radius:10px; border:1px solid rgba(0,104,55,0.15);">
-               <ul style="margin:0; padding-left:16px; line-height:1.6; font-weight:500;">
-                  <li><b>Tiba:</b> Piket <span class="mono">≤ 06:30</span> | Non <span class="mono">≤ 07:00</span></li>
-                  <li><b>Pulang (Sen-Kam):</b> Piket <span class="mono">≥ 14:10</span> | Non <span class="mono">≥ 14:00</span></li>
-                  <li><b>Pulang (Jum-Sab):</b> Piket <span class="mono">≥ 10:40</span> | Non <span class="mono">≥ 10:30</span></li>
-                  <li style="margin-top:6px; color:var(--A);"><b>Denda:</b> Bervariasi berdasarkan jenis guru (Lihat tab Pengaturan)</li>
-               </ul>
-            </div>
-            <div class="comp-list" id="dashPiketList" style="margin-top:0;">
-               <div style="font-size:13px; color:var(--mut); text-align:center;">Memuat jadwal piket...</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= V2: INPUT ABSENSI ================= -->
-      <section id="vA" hidden>
-        <div class="card" style="padding: 20px 24px;">
-          <div class="row" style="margin:0">
-            <div style="flex:1;min-width:150px">
-              <label class="f" for="tgl">Pilih Tanggal Absen</label>
-              <input type="date" id="tgl">
-            </div>
-            <button class="btn ghost" id="semua">Set Hadirkan Semua</button>
-          </div>
-          <div class="stats-banner" id="sum" style="margin-top:20px; margin-bottom:0;"></div>
-        </div>
-        <div id="list"><div class="sk"></div><div class="sk"></div></div>
-      </section>
-
-      <!-- ================= V3: LAPORAN ================= -->
-      <section id="vL" hidden>
-        <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px;">
-          <button class="btn ghost" id="prev" style="min-width:44px; padding:0">‹</button>
-          <div style="text-align:center">
-            <b id="pLabel" style="font-size:18px; font-weight:800; display:block"></b>
-            <span style="font-size:12px; color:var(--mut); font-weight:600" id="pDate"></span>
-          </div>
-          <button class="btn ghost" id="next" style="min-width:44px; padding:0">›</button>
-        </div>
-        <div class="card">
-          <div class="tw">
-            <table class="lap">
-              <thead>
-                <tr>
-                  <th>Nama Guru</th>
-                  <th title="Hadir">H</th><th title="Dinas">D</th><th title="Izin penuh">I</th>
-                  <th title="Izin datang">ID</th><th title="Izin pulang">IP</th>
-                  <th title="Sakit">S</th><th title="Alpa">A</th><th>Kehadiran</th>
-                </tr>
-              </thead>
-              <tbody id="rep"></tbody>
-            </table>
-          </div>
-          <button class="btn gold" id="csv" style="width:100%; margin-top: 20px;">Unduh Laporan Format CSV</button>
-        </div>
-      </section>
-
-      <!-- ================= V4: PENGATURAN ================= -->
-      <section id="vS" hidden>
-        <div class="dash-grid-bot" style="grid-template-columns: 1fr 1fr; gap:24px;">
-          
-          <!-- Kategori Guru & Denda -->
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">💰 Besaran Denda & Kategori</h3>
-            <p class="card-subtitle">Sesuaikan potongan denda berdasarkan jenis/honor guru</p>
-            <div id="setKategori" style="display:flex; flex-direction:column; gap:16px;">
-              <!-- Injected via JS -->
-            </div>
-          </div>
-
-          <!-- Jadwal Piket -->
-          <div class="card" style="margin-bottom:0">
-            <h3 class="card-title">📅 Jadwal Piket Mingguan</h3>
-            <p class="card-subtitle">Klik edit untuk mengubah petugas piket</p>
-            <div id="setPiket" class="list-ui">
-              <!-- Injected via JS -->
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:24px;">
-          <h3 class="card-title">👥 Klasifikasi Jenis Guru</h3>
-          <p class="card-subtitle">Tentukan kategori tiap guru agar denda disesuaikan secara otomatis</p>
-          <div id="setGuru" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px;">
-             <!-- Injected via JS -->
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <div class="bar" id="barA" hidden>
-      <div class="in">
-        <button class="btn" id="simpan">Simpan Data Absensi</button>
-      </div>
-    </div>
-    <div class="bar" id="barS" hidden>
-      <div class="in">
-        <button class="btn" id="simpanPengaturan">Simpan Pengaturan</button>
-      </div>
-    </div>
+<header><div class="top"><div><h1>Manajemen Sekolah</h1><p class="sub"><span id="brand"></span> · <span id="today"></span></p></div><span class="pill" id="mode">…</span></div></header>
+<main>
+  <div class="seg" role="tablist">
+    <button role="tab" id="tD" aria-selected="true">Dasbor</button>
+    <button role="tab" id="tA" aria-selected="false">Absen</button>
+    <button role="tab" id="tT" aria-selected="false">Tracker</button>
+    <button role="tab" id="tG" aria-selected="false">Guru</button>
+    <button role="tab" id="tW" aria-selected="false">Jam Mingguan</button>
+    <button role="tab" id="tL" aria-selected="false">Bulanan</button>
   </div>
-</div>
+  <section id="vD"><div id="dash"></div></section>
 
-<div class="modal-overlay" id="uiModal" aria-hidden="true">
-  <div class="modal-card">
-    <div class="modal-head">
-      <h3 id="uiModalTitle">Detail</h3>
-      <button class="modal-close" id="uiModalClose">&times;</button>
+  <section id="vA" hidden>
+    <div class="card">
+      <div class="row"><div style="flex:1;min-width:150px"><label class="f" for="tgl">Tanggal</label><input type="date" id="tgl"></div>
+      <button class="btn ghost" id="semua" style="align-self:flex-end">Hadirkan semua</button></div>
+      <button class="btn" id="scan" style="width:100%;margin-top:10px">Scan daftar hadir dari foto</button>
+      <input type="file" id="foto" accept="image/*" hidden>
+      <div class="stats" id="sum"></div>
     </div>
-    <div class="modal-body" id="uiModalBody"></div>
-  </div>
-</div>
+    <div id="list"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
+  </section>
 
+  <section id="vG" hidden>
+    <div class="card nav"><button class="btn ghost ic" id="gprev" aria-label="Periode sebelumnya">‹</button><b id="gLabel"></b><button class="btn ghost ic" id="gnext" aria-label="Periode berikutnya">›</button></div>
+    <div id="gl"></div>
+  </section>
+  <section id="vP" hidden><div id="prof"></div></section>
+
+  <section id="vT" hidden>
+    <div class="card nav"><button class="btn ghost ic" id="tprev" aria-label="Periode sebelumnya">‹</button><b id="tLabel"></b><button class="btn ghost ic" id="tnext" aria-label="Periode berikutnya">›</button></div>
+    <div class="card"><div class="tw"><table class="tk" id="trk"></table></div>
+      <p class="lg"><span><i class="hc k-H"></i>Hadir</span><span><i class="hc k-D"></i>Dinas</span><span><i class="hc k-I"></i>Izin</span><span><i class="hc k-S"></i>Sakit</span><span><i class="hc k-A"></i>Alpa</span><span><i class="hc"></i>Belum diisi</span></p>
+      <p class="mut">Ketuk kotak untuk melihat detail. Kotak pudar = akhir pekan.</p></div>
+  </section>
+
+  <section id="vW" hidden>
+    <div class="card nav"><button class="btn ghost ic" id="wprev" aria-label="Minggu sebelumnya">‹</button><b id="wLabel"></b><button class="btn ghost ic" id="wnext" aria-label="Minggu berikutnya">›</button></div>
+    <div class="card"><div class="tw"><table><thead id="wh"></thead><tbody id="wb"></tbody></table></div>
+      <p class="mut">Jam kerja = jam pulang − jam datang. Titik emas = datang lewat jam masuk. Target dan jam masuk diatur di JAM_TARGET dan JAM_MASUK.</p>
+      <button class="btn" id="wcsv" style="width:100%">Unduh CSV mingguan</button></div>
+  </section>
+
+  <section id="vL" hidden>
+    <div class="card nav">
+      <button class="btn ghost ic" id="prev" aria-label="Periode sebelumnya">‹</button>
+      <b id="pLabel"></b>
+      <button class="btn ghost ic" id="next" aria-label="Periode berikutnya">›</button>
+    </div>
+    <div class="card"><div class="tw"><table><thead><tr><th>Guru</th><th title="Hadir">H</th><th title="Dinas">D</th><th title="Izin sehari penuh">I</th><th title="Izin saat datang">ID</th><th title="Izin saat pulang">IP</th><th title="Sakit">S</th><th title="Alpa">A</th><th>Kehadiran</th></tr></thead><tbody id="rep"></tbody></table></div>
+      <p class="mut">H Hadir · D Dinas · I Izin sehari penuh · ID Izin saat datang · IP Izin saat pulang · S Sakit · A Alpa. Kehadiran = bobot ÷ hari kerja berjalan (Senin–Jumat); H dan D bernilai 1, ID dan IP setengah hari (atur di BOBOT).</p>
+      <button class="btn" id="csv" style="width:100%">Unduh rekap bulanan (CSV)</button>
+      <button class="btn ghost" id="csv2" style="width:100%;margin-top:8px">Unduh data harian lengkap (CSV)</button></div>
+  </section>
+</main>
+
+<div class="bar" id="bar" hidden><div class="in"><button class="btn" id="simpan">Simpan absensi</button></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbxkg9PgLeN-bYWg_vtFVLAPpIqr8feLF98mi2nxeYTGGM1kEmHIM3ArZQRkI9B5PRk/exec';
-const HARI_KERJA = [1,2,3,4,5,6];
+/* ===== KONFIGURASI ===== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbxkg9PgLeN-bYWg_vtFVLAPpIqr8feLF98mi2nxeYTGGM1kEmHIM3ArZQRkI9B5PRk/exec';            // tempel URL Web App Apps Script; kosong = mode demo (data di browser)
+const HARI_KERJA = [1,2,3,4,5,6]; // 0=Minggu ... 6=Sabtu
 const ST = {H:'Hadir', I:'Izin', S:'Sakit', A:'Alpa', D:'Dinas'};
-const BOBOT = {H:1, D:1, ID:.5, IP:.5};
+const BOBOT = {H:1, D:1, ID:.5, IP:.5}; // nilai kehadiran per hari; yang tidak tercantum = 0
+const NAMA_SEKOLAH = 'SD Muhammadiyah 2 Pekajangan'; // tampil di header
+const JAM_MASUK = '07:00', JAM_TARGET = 7; // batas terlambat & target jam kerja per hari
+const FITUR_SCAN = false; // ubah ke true setelah ANTHROPIC_API_KEY dan SCAN_PIN diisi di Script properties
 
-/* ===== KONFIGURASI DINAMIS ===== */
-let CONFIG = JSON.parse(localStorage.getItem('absen_config'));
-if(!CONFIG) {
-   CONFIG = {
-      kategori: {
-         'A': { nama: 'Golongan A (Sertifikasi/PNS)', piket: 500, non: 250 },
-         'B': { nama: 'Golongan B (Yayasan/GTY)', piket: 400, non: 200 },
-         'C': { nama: 'Golongan C (Honorer/GTT)', piket: 300, non: 150 }
-      },
-      guru_kat: {}, 
-      piket: {
-         1: ['G11', 'G12'], 2: ['G07', 'G06'], 3: ['G04', 'G01'], 
-         4: ['G05', 'G11'], 5: ['G09', 'G02'], 6: ['G03', 'G10']
-      }
-   };
-}
-
-function getDenda(id, isPiket) {
-   const catId = CONFIG.guru_kat[id] || 'A'; // Default Tipe A
-   const cat = CONFIG.kategori[catId] || CONFIG.kategori['A'];
-   return isPiket ? cat.piket : cat.non;
-}
-
+/* ===== UTIL ===== */
 const $ = s => document.querySelector(s), pad = n => String(n).padStart(2,'0');
 const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -506,10 +203,12 @@ const ini = n => n.split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase()
 const nowHM = () => { const d = new Date(); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
 const BLN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const BLN3 = BLN.map(b => b.slice(0,3));
-const formatRp = (angka) => 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 3000); }
+function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2400); }
+
+/* Periode laporan: tanggal 26 bulan lalu s.d. 25 bulan berjalan */
 function periode(y, m){ return { from: iso(new Date(y, m-1, 26)), to: iso(new Date(y, m, 25)) }; }
 
+/* ===== API (+ mode demo) ===== */
 async function api(action, p = {}, body){
   if (!API_URL) return demo(action, p, body);
   let r;
@@ -528,16 +227,19 @@ function demo(a, p, b){
   return true;
 }
 
-const S = { guru:[], rows:{}, rep:null, monthData: [] };
+/* ===== STATE ===== */
+const S = { guru:[], rows:{}, rep:null };
 const t0 = new Date();
+$('#today').textContent = t0.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+$('#brand').textContent = NAMA_SEKOLAH;
+$('#mode').textContent = API_URL ? 'Terhubung Sheets' : 'Mode demo';
 $('#tgl').value = iso(t0);
-$('#dashDateContext').value = iso(t0);
 S.rep = t0.getDate() >= 26 ? {y:t0.getFullYear(), m:t0.getMonth()+1} : {y:t0.getFullYear(), m:t0.getMonth()};
 
+/* ===== KLASIFIKASI HARI (gabungan status datang + pulang) ===== */
 const LBL = {H:'Hadir', D:'Dinas', I:'Izin', ID:'Izin datang', IP:'Izin pulang', S:'Sakit', A:'Alpa'};
 const KOL = ['H','D','I','ID','IP','S','A'], NH = ['I','S','A','D'];
 const adaJam = v => ['H','I','D'].includes(v);
-
 function klas(r){
   const a = r.sd || '', b = r.sp || '';
   if (!a || !b) return a || b || null;
@@ -547,381 +249,37 @@ function klas(r){
   return ['D','S','A','I'].find(x => a === x || b === x) || 'H';
 }
 
-function cekWaktu(id, masuk, pulang, targetDateStr = null) {
-  const tglInput = new Date(targetDateStr || $('#tgl').value);
-  const day = tglInput.getDay();
-  // Gunakan referensi Piket dari CONFIG 
-  const isPiket = CONFIG.piket[day] && CONFIG.piket[day].includes(id);
-  const isJumatSabtu = day === 5 || day === 6;
-  
-  let telat = false, pulangAwal = false;
-  if (masuk) {
-    if (isPiket && masuk > "06:30") telat = true;
-    else if (!isPiket && masuk > "07:00") telat = true;
-  }
-  if (pulang) {
-    if (isPiket) {
-      if (isJumatSabtu && pulang < "10:40") pulangAwal = true;
-      else if (!isJumatSabtu && pulang < "14:10") pulangAwal = true;
-    } else {
-      if (isJumatSabtu && pulang < "10:30") pulangAwal = true;
-      else if (!isJumatSabtu && pulang < "14:00") pulangAwal = true;
-    }
-  }
-  return { isPiket, telat, pulangAwal };
-}
-
-function openModal(title, html) {
-  $('#uiModalTitle').textContent = title;
-  $('#uiModalBody').innerHTML = html;
-  $('#uiModal').classList.add('show');
-}
-$('#uiModalClose').onclick = () => $('#uiModal').classList.remove('show');
-$('#uiModal').onclick = e => { if(e.target === $('#uiModal')) $('#uiModal').classList.remove('show'); };
-
-/* ===== DASBOR KLIK EVENTS ===== */
-$('#btnTotalGuru').onclick = () => {
-    let html = `<div style="margin-bottom:24px"><h4 style="margin:0 0 12px; font-weight:800; color:var(--sidebar);">Tren Hadir/Tidak (Periode Ini)</h4>`;
-    const dailyStats = {};
-    S.monthData.forEach(r => {
-        if(!dailyStats[r.tanggal]) dailyStats[r.tanggal] = { H: 0, A: 0 };
-        const k = klas(r);
-        if (k === 'H' || k === 'D') dailyStats[r.tanggal].H++;
-        else dailyStats[r.tanggal].A++;
-    });
-
-    const dates = Object.keys(dailyStats).sort();
-    html += `<div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:12px; align-items:flex-end; min-height:120px;">`;
-    dates.forEach(d => {
-        const t = dailyStats[d];
-        const hPct = Math.max(5, Math.round((t.H / (S.guru.length||1)) * 100)); 
-        html += `<div style="display:flex; flex-direction:column; align-items:center; min-width:32px;">
-          <div style="height:100px; width:16px; background:var(--line); border-radius:8px; position:relative; overflow:hidden; display:flex; flex-direction:column-reverse;">
-            <div style="height:${hPct}%; width:100%; background:var(--pri); border-radius:8px; transition:height 0.5s;"></div>
-          </div>
-          <span style="font-size:10px; font-family:var(--font-mono); margin-top:6px; color:var(--mut);">${d.slice(-2)}</span>
-        </div>`;
-    });
-    if(dates.length === 0) html += `<div style="color:var(--mut); font-size:13px;">Belum ada riwayat absensi periode ini.</div>`;
-    html += `</div></div>`;
-
-    html += `<h4 style="margin:0 0 12px; font-weight:800; color:var(--sidebar);">Absensi Guru (Sampai Hari Ini)</h4><div class="list-ui" style="max-height:300px; overflow-y:auto; padding-right:8px;">`;
-    S.guru.forEach(g => {
-        const m = S.monthData.filter(x => x.id === g.id);
-        const h = m.filter(x => klas(x)==='H' || klas(x)==='D').length;
-        html += `<div class="item-ui"><div class="av">${ini(g.nama)}</div>
-          <div class="item-ui-info"><b>${esc(g.nama)}</b></div>
-          <div class="badge" style="background:var(--soft); color:var(--pri)">${h} Hari Hadir</div>
-        </div>`;
-    });
-    html += `</div>`;
-    openModal("Statistik Kehadiran Guru", html);
-};
-
-$('#btnTelatGuru').onclick = () => {
-    let dashDate = $('#dashDateContext').value;
-    const renderLateList = (dateStr) => {
-        const dayData = S.monthData.filter(r => r.tanggal === dateStr);
-        let lateHtml = '';
-        const lates = dayData.filter(r => {
-             const w = cekWaktu(r.id, r.masuk, r.pulang, r.tanggal);
-             return w.telat || w.pulangAwal;
-        });
-        
-        if (lates.length > 0) {
-            lates.forEach(r => {
-                const g = S.guru.find(x => x.id === r.id);
-                if(!g) return;
-                const w = cekWaktu(r.id, r.masuk, r.pulang, r.tanggal);
-                
-                let badges = w.isPiket ? '<span class="badge P">Piket</span>' : '<span class="badge" style="background:var(--bg);border:1px solid var(--line);">Reguler</span>';
-                if(w.telat) badges += '<span class="badge T">Terlambat</span>';
-                if(w.pulangAwal) badges += '<span class="badge" style="background:#ffedd5;color:#ea580c">Pulang Awal</span>';
-                
-                lateHtml += `<div class="item-ui">
-                   <div class="av">${ini(g.nama)}</div>
-                   <div class="item-ui-info"><b>${esc(g.nama)}</b><span class="mono">Jam Tiba: ${r.masuk || '-'}</span></div>
-                   <div style="display:flex;gap:4px;flex-direction:column;align-items:flex-end;">${badges}</div>
-                </div>`;
-            });
-        } else {
-            lateHtml = `<div style="padding:30px 20px; text-align:center; color:var(--mut); background:var(--bg); border-radius:12px;">🎉 Hebat! Tidak ada keterlambatan hari ini.</div>`;
-        }
-        return lateHtml;
-    };
-
-    let html = `
-    <div style="margin-bottom: 20px; background:var(--soft); padding:16px; border-radius:12px; border:1px solid rgba(0,104,55,0.1);">
-        <label class="f" style="color:var(--pri)">Cek Hari Lain</label>
-        <input type="date" id="modalLateDate" value="${dashDate}">
-    </div>
-    <h4 style="margin:0 0 12px; font-weight:800; color:var(--sidebar);">Daftar Keterlambatan</h4>
-    <div id="modalLateContent" class="list-ui">
-       ${renderLateList(dashDate)}
-    </div>`;
-
-    openModal("Evaluasi Kedatangan", html);
-    $('#modalLateDate').onchange = (e) => { $('#modalLateContent').innerHTML = renderLateList(e.target.value); };
-};
-
-$('#btnEstimasiDenda').onclick = () => {
-    const dMap = {};
-    S.monthData.forEach(r => {
-        const w = cekWaktu(r.id, r.masuk, r.pulang, r.tanggal);
-        let dr = 0;
-        if(w.telat) dr += getDenda(r.id, w.isPiket);
-        if(w.pulangAwal) dr += getDenda(r.id, w.isPiket);
-        
-        if (dr > 0) {
-            if(!dMap[r.id]) dMap[r.id] = { total: 0, logs: [] };
-            dMap[r.id].total += dr;
-            dMap[r.id].logs.push({ tanggal: r.tanggal, denda: dr, type: (w.isPiket?'Piket':'Non') });
-        }
-    });
-
-    let html = `<div class="list-ui" style="max-height:400px; overflow-y:auto; padding-right:8px;">`;
-    const ids = Object.keys(dMap).sort((a,b) => dMap[b].total - dMap[a].total);
-    if(ids.length > 0) {
-        ids.forEach(id => {
-            const g = S.guru.find(x => x.id === id);
-            const data = dMap[id];
-            const detailStr = data.logs.map(l => `<br/>— <span class="mono">${l.tanggal.slice(-2)}</span> (+${l.denda})`).join('');
-            html += `<div class="item-ui" style="align-items:flex-start;">
-               <div class="av" style="margin-top:4px;">${g ? ini(g.nama) : id}</div>
-               <div class="item-ui-info">
-                   <b>${g ? esc(g.nama) : id}</b>
-                   <span style="font-size:12px; line-height:1.6; color:var(--mut);">Rincian Pelanggaran: ${detailStr}</span>
-               </div>
-               <div class="badge Denda">${formatRp(data.total)}</div>
-            </div>`;
-        });
-    } else {
-        html += `<div style="padding:30px 20px; text-align:center; color:var(--mut); background:var(--bg); border-radius:12px;">Bulan ini nihil denda disiplin.</div>`;
-    }
-    html += `</div>`;
-    openModal("Estimasi Pemotongan & Denda", html);
-};
-
-/* ===== DASBOR UTAMA ===== */
-function renderPiketSchedule() {
-   const hariArr = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-   let html = '';
-   hariArr.forEach((h, idx) => {
-      const ids = CONFIG.piket[idx + 1] || [];
-      const names = ids.map(id => {
-         const g = S.guru.find(x => x.id === id);
-         return g ? g.nama.split(' ')[0] : id; 
-      }).join(', ');
-      
-      html += `<div class="comp-item" style="padding-bottom:10px; padding-top:4px;">
-        <span style="font-weight:700; color:var(--ink);">${h}</span>
-        <b style="font-size:13px; text-align:right; color:var(--pri);">${names || '-'}</b>
-      </div>`;
-   });
-   $('#dashPiketList').innerHTML = html;
-}
-
-function updateDashboardStats(targetDateStr) {
-  if(!targetDateStr) targetDateStr = $('#dashDateContext').value;
-  const tot = S.guru.length;
-  if(!tot) return;
-
-  const dayRowsMap = {};
-  S.monthData.filter(r => r.tanggal === targetDateStr).forEach(r => dayRowsMap[r.id] = r);
-
-  let h=0, i=0, s=0, a=0, telatTotal=0;
-  
-  S.guru.forEach(g => {
-    const r = dayRowsMap[g.id] || {};
-    const k = klas(r);
-    if (k === 'H' || k === 'D') h++;
-    else if (k === 'I' || k === 'ID' || k === 'IP') i++;
-    else if (k === 'S') s++;
-    else if (k === 'A') a++;
-
-    const w = cekWaktu(g.id, r.masuk, r.pulang, targetDateStr);
-    if (w.telat) telatTotal++;
-  });
-
-  $('#dashTotalGuru').textContent = tot;
-  $('#dashHadirGuru').textContent = h;
-  $('#dashDescGuru').textContent = `Dari ${tot} guru`;
-  $('#dashTelatGuru').textContent = telatTotal;
-  
-  const pct = Math.round((h/tot)*100);
-  const pctEl = $('#dashPctGuru');
-  pctEl.textContent = `${pct}%`;
-  pctEl.className = 'stat-trend mono ' + (pct >= 80 ? 'up' : 'down');
-
-  const cH = (h/tot)*100, cS = cH + (s/tot)*100, cI = cS + (i/tot)*100;
-  $('#chartGuru').style.background = `conic-gradient(var(--H) 0% ${cH}%, var(--S) ${cH}% ${cS}%, var(--I) ${cS}% ${cI}%, var(--A) ${cI}% 100%)`;
-  $('#lgH').textContent = h; $('#lgI').textContent = i;
-  $('#lgS').textContent = s; $('#lgA').textContent = a;
-
-  const arriveRank = S.guru.filter(g => {
-    const r = dayRowsMap[g.id] || {};
-    return r.masuk && (klas(r) === 'H' || klas(r) === 'D');
-  }).sort((g1, g2) => dayRowsMap[g1.id].masuk.localeCompare(dayRowsMap[g2.id].masuk));
-
-  let arrHTML = '';
-  if(arriveRank.length > 0) {
-    arrHTML = arriveRank.slice(0, 4).map((g, idx) => {
-      const w = cekWaktu(g.id, dayRowsMap[g.id].masuk, null, targetDateStr);
-      let medal = '';
-      if(idx === 0) medal = '<span class="medal medal-1">🥇</span>';
-      else if(idx === 1) medal = '<span class="medal medal-2">🥈</span>';
-      else if(idx === 2) medal = '<span class="medal medal-3">🥉</span>';
-      else medal = `<span class="rank-num mono">${idx+1}</span>`;
-
-      return `<div class="item-ui">
-        ${medal}<div class="av">${ini(g.nama)}</div>
-        <div class="item-ui-info"><b>${esc(g.nama)}</b><span class="mono">Tiba: ${dayRowsMap[g.id].masuk} ${w.isPiket ? '(Piket)' : ''}</span></div>
-      </div>`;
-    }).join('');
-  } else {
-    arrHTML = '<div style="font-size:13px; color:var(--mut);">Data kedatangan tidak tersedia.</div>';
-  }
-  $('#dashFastestList').innerHTML = arrHTML;
-
-  const flaggedList = S.guru.filter(g => {
-    const r = dayRowsMap[g.id] || {};
-    const k = klas(r);
-    if (!k) return false;
-    if (k !== 'H' && k !== 'D') return true; 
-    const w = cekWaktu(g.id, r.masuk, r.pulang, targetDateStr);
-    return w.telat || w.pulangAwal;
-  });
-  
-  let abHTML = '';
-  if (flaggedList.length > 0) {
-    abHTML = flaggedList.map(g => {
-      const r = dayRowsMap[g.id];
-      const k = klas(r);
-      const w = cekWaktu(g.id, r.masuk, r.pulang, targetDateStr);
-      
-      let badges = '';
-      let curDenda = 0;
-      if (k !== 'H' && k !== 'D') {
-        const cls = (k==='I'||k==='ID'||k==='IP') ? 'I' : k;
-        badges += `<span class="badge ${cls}">${LBL[k]}</span>`;
-      } else {
-        if (w.telat) { badges += `<span class="badge T">Terlambat</span>`; curDenda += getDenda(g.id, w.isPiket); }
-        if (w.pulangAwal) { badges += `<span class="badge" style="background:#ffedd5;color:#ea580c">Pulang Awal</span>`; curDenda += getDenda(g.id, w.isPiket); }
-      }
-      if(curDenda > 0) badges += `<span class="badge Denda">+${formatRp(curDenda)}</span>`;
-
-      return `<div class="item-ui"><div class="av">${ini(g.nama)}</div><div class="item-ui-info"><b>${esc(g.nama)}</b><span>${w.isPiket ? 'Guru Piket' : 'Pendidik'}</span></div><div style="display:flex;gap:4px;flex-direction:column;align-items:flex-end;">${badges}</div></div>`;
-    }).join('');
-  } else {
-    abHTML = '<div style="font-size:13px; color:var(--H); font-weight:600; padding: 10px 0;">🎉 Luar biasa! Nihil pelanggaran/izin di tanggal ini.</div>';
-  }
-  $('#dashAbsenList').innerHTML = abHTML;
-
-  let totDendaBulan = 0, sumTelat = 0, sumPulangAwal = 0;
-  const lMap = {};
-  S.guru.forEach(g => { lMap[g.id] = { id:g.id, nama:g.nama, hadir:0, pelanggaran:0, denda:0 }; });
-
-  S.monthData.forEach(r => {
-    if(!lMap[r.id]) return;
-    const k = klas(r);
-    if (k === 'H' || k === 'D') lMap[r.id].hadir++;
-    else lMap[r.id].pelanggaran++; 
-    
-    const w = cekWaktu(r.id, r.masuk, r.pulang, r.tanggal);
-    let dr = 0;
-    if(w.telat) { dr += getDenda(r.id, w.isPiket); sumTelat++; lMap[r.id].pelanggaran++; }
-    if(w.pulangAwal) { dr += getDenda(r.id, w.isPiket); sumPulangAwal++; lMap[r.id].pelanggaran++; }
-    
-    lMap[r.id].denda += dr;
-    totDendaBulan += dr;
-  });
-
-  $('#dashTotalDenda').textContent = formatRp(totDendaBulan);
-  $('#compDendaBox').textContent = formatRp(totDendaBulan);
-  $('#compTelat').textContent = `${sumTelat} Kasus`;
-  $('#compPulangAwal').textContent = `${sumPulangAwal} Kasus`;
-  
-  const leaders = Object.values(lMap).sort((a,b) => {
-    if(b.hadir !== a.hadir) return b.hadir - a.hadir;
-    if(a.pelanggaran !== b.pelanggaran) return a.pelanggaran - b.pelanggaran;
-    return a.denda - b.denda;
-  });
-
-  if (S.monthData.length > 0) {
-      let leadHTML = leaders.slice(0, 5).map((g, idx) => {
-        let medal = '';
-        if(idx === 0) medal = '<span class="medal medal-1">🥇</span>';
-        else if(idx === 1) medal = '<span class="medal medal-2">🥈</span>';
-        else if(idx === 2) medal = '<span class="medal medal-3">🥉</span>';
-        else medal = `<span class="rank-num mono">${idx+1}</span>`;
-
-        return `<div class="item-ui">
-          ${medal}<div class="av">${ini(g.nama)}</div>
-          <div class="item-ui-info"><b>${esc(g.nama)}</b><span>${g.hadir}x Hadir · ${g.pelanggaran} Pelanggaran</span></div>
-          ${g.denda > 0 ? `<div class="badge Denda">${formatRp(g.denda)}</div>` : `<div class="badge" style="background:var(--H);color:#fff">Sempurna</div>`}
-        </div>`;
-      }).join('');
-      $('#dashLeaderboard').innerHTML = leadHTML;
-
-      const avgH = leaders.reduce((acc, curr) => acc + curr.hadir, 0);
-      const totalDays = [...new Set(S.monthData.map(d=>d.tanggal))].length; 
-      const pctL = (totalDays && tot>0) ? Math.round((avgH / (tot * totalDays)) * 100) : 0;
-      $('#compGuru').textContent = `${pctL}%`;
-  }
-}
-
-async function loadDashboardData(){
-  const dashDateStr = $('#dashDateContext').value || iso(new Date());
-  const end = new Date(dashDateStr);
-  const {from, to} = periode(end.getFullYear(), end.getMonth());
-  try {
-    if (!S.guru.length) { S.guru = await api('guru'); renderPiketSchedule(); }
-    S.monthData = await api('absensi', {from, to});
-    updateDashboardStats(dashDateStr); 
-  } catch(e){ toast('Gagal muat dasbor: ' + e.message); }
-}
-
-$('#dashDateContext').onchange = () => { loadDashboardData(); };
-
-/* ===== INPUT ABSENSI ===== */
+/* ===== ABSEN HARIAN ===== */
 async function loadDay(){
   const tgl = $('#tgl').value;
-  $('#list').innerHTML = '<div class="sk"></div><div class="sk"></div>';
+  $('#list').innerHTML = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
   try {
-    if (!S.guru.length) { S.guru = await api('guru'); renderPiketSchedule(); }
+    if (!S.guru.length) S.guru = await api('guru');
     const data = await api('absensi', {from:tgl, to:tgl});
     S.rows = {};
     data.forEach(r => S.rows[r.id] = {sd:r.sd, masuk:r.masuk, sp:r.sp, pulang:r.pulang, ket:r.ket, full: !!r.sd && r.sd !== 'H' && r.sd === r.sp && !r.pulang});
     renderDay();
-  } catch(e){ $('#list').innerHTML = '<div class="card" style="border-color:var(--A)">Gagal memuat: ' + esc(e.message) + '</div>'; }
+  } catch(e){ $('#list').innerHTML = '<div class="card">Gagal memuat: ' + esc(e.message) + '</div>'; }
 }
-
 const CH = (name, side) => Object.entries(ST).map(([k,v]) => `<label class="chip ${k}"><input type="radio" name="${name}" data-s="${side}" value="${k}"><span>${v}</span></label>`).join('');
-const TM = (lab, cls, key) => `<div class="xr ${cls}"><label class="f">${lab}</label><div class="pl"><input type="time" data-f="${key}"><button type="button" class="btn ghost nw" data-f="${key}">Waktu Skrg</button></div></div>`;
-
+const TM = (lab, cls, key) => `<div class="xr ${cls}"><label class="f">${lab}</label><div class="pl"><input type="time" data-f="${key}"><button type="button" class="btn ghost nw" data-f="${key}" aria-label="Isi ${lab.toLowerCase()} dengan waktu sekarang">Sekarang</button></div></div>`;
 function renderDay(){
   $('#list').innerHTML = S.guru.map(g => `<article class="card g" data-id="${g.id}">
-    <div class="who">
-      <span class="av">${esc(ini(g.nama))}</span>
-      <div><b>${esc(g.nama)}</b><div class="piket-info"></div></div>
-      <span class="bd"></span>
-    </div>
-    <div class="sec"><h4>Sesi Datang</h4><div class="chips" role="radiogroup">${CH('d'+g.id, 'sd')}</div>
-      ${TM('Jam Tiba', 'sd-t', 'masuk')}
-      <label class="fl"><input type="checkbox" class="full"> Berlaku Seharian (Tanpa sesi pulang)</label></div>
-    <div class="sec sec-p"><h4>Sesi Pulang</h4><div class="chips" role="radiogroup">${CH('p'+g.id, 'sp')}</div>
-      ${TM('Jam Pulang', 'sp-t', 'pulang')}</div>
-    <div class="kt"><label class="f">Keterangan Izin/Surat Tugas</label><input type="text" class="in-k" placeholder="Ketik keterangan..."></div>
+    <div class="who"><span class="av" aria-hidden="true">${esc(ini(g.nama))}</span><b>${esc(g.nama)}</b><span class="bd"></span></div>
+    <div class="sec"><h4>Datang</h4><div class="chips" role="radiogroup" aria-label="Status datang ${esc(g.nama)}">${CH('d'+g.id, 'sd')}</div>
+      ${TM('Jam datang', 'sd-t', 'masuk')}
+      <label class="fl"><input type="checkbox" class="full"> Berlaku seharian (tanpa sesi pulang)</label></div>
+    <div class="sec sec-p"><h4>Pulang</h4><div class="chips" role="radiogroup" aria-label="Status pulang ${esc(g.nama)}">${CH('p'+g.id, 'sp')}</div>
+      ${TM('Jam pulang', 'sp-t', 'pulang')}</div>
+    <div class="kt"><label class="f">Keterangan (wajib untuk izin / dinas)</label><input type="text" class="in-k" placeholder="Alasan atau nomor surat tugas"></div>
   </article>`).join('');
   document.querySelectorAll('.g').forEach(sync); summary();
 }
-
 function bd(c){
   const r = S.rows[c.dataset.id] || {}, k = klas(r), e = c.querySelector('.bd');
   e.className = 'bd c-' + (k ? k[0] : '');
   e.textContent = !k ? 'Belum diisi' : LBL[k] + (k === 'H' ? ` · ${r.masuk || '–'} – ${r.pulang || '–'}` : '');
 }
-
 function sync(c){
   const r = S.rows[c.dataset.id] ||= {}, d = c.dataset;
   d.sd = r.sd || ''; d.sp = r.sp || ''; d.full = r.full ? '1' : '';
@@ -930,29 +288,13 @@ function sync(c){
   c.querySelector('.full').checked = !!r.full;
   c.querySelectorAll('input[data-f]').forEach(i => i.value = r[i.dataset.f] || '');
   c.querySelector('.in-k').value = r.ket || '';
-  
-  const w = cekWaktu(d.id, r.masuk, r.pulang, $('#tgl').value);
-  let infoHtml = '';
-  if (w.isPiket) infoHtml += '<span class="badge P">Piket</span>';
-  if (w.telat) infoHtml += '<span class="badge T">Terlambat</span>';
-  if (w.pulangAwal) infoHtml += '<span class="badge T" style="background:#fff7ed">Pulang Awal</span>';
-  c.querySelector('.piket-info').innerHTML = infoHtml;
   bd(c);
 }
-
 function summary(){
-  let h = 0, x = 0, n = 0, telat = 0;
-  S.guru.forEach(g => { 
-    const k = klas(S.rows[g.id] || {}); 
-    const r = S.rows[g.id] || {};
-    const w = cekWaktu(g.id, r.masuk, r.pulang, $('#tgl').value);
-    if (!k) n++; else if (k === 'H' || k === 'D') h++; else x++; 
-    if (w.telat) telat++;
-  });
-  $('#sum').innerHTML = `<div class="stat-b H"><b class="c-H">${h}</b><span>Hadir</span></div><div class="stat-b A"><b class="c-A">${x}</b><span>Izin</span></div><div class="stat-b T"><b style="color:#ea580c">${telat}</b><span>Telat</span></div><div class="stat-b"><b>${n}</b><span>Kosong</span></div>`;
-  if($('#dashDateContext').value === $('#tgl').value) updateDashboardStats(); 
+  let h = 0, x = 0, n = 0;
+  S.guru.forEach(g => { const k = klas(S.rows[g.id] || {}); if (!k) n++; else if (k === 'H' || k === 'D') h++; else x++; });
+  $('#sum').innerHTML = `<div class="stat"><b class="c-H">${h}</b><span>Hadir/Dinas</span></div><div class="stat"><b class="c-A">${x}</b><span>Izin/Sakit/Alpa</span></div><div class="stat"><b>${n}</b><span>Belum diisi</span></div>`;
 }
-
 const L = $('#list');
 L.addEventListener('change', e => {
   const c = e.target.closest('.g'); if (!c) return;
@@ -971,15 +313,14 @@ L.addEventListener('change', e => {
     r.full = e.target.checked;
     if (r.full) r.sp = r.sd; else if (r.sp === r.sd) r.sp = '';
   } else return;
-  sync(c); summary();
+  c.classList.remove('ragu'); sync(c); summary();
 });
 L.addEventListener('input', e => {
   const c = e.target.closest('.g'); if (!c) return;
   const r = S.rows[c.dataset.id] ||= {};
   if (e.target.dataset.f) r[e.target.dataset.f] = e.target.value;
   else if (e.target.classList.contains('in-k')) r.ket = e.target.value;
-  sync(c); 
-  summary();
+  bd(c);
 });
 L.addEventListener('click', e => {
   const b = e.target.closest('.nw'); if (!b) return;
@@ -989,14 +330,13 @@ L.addEventListener('click', e => {
 $('#semua').onclick = () => {
   const today = $('#tgl').value === iso(new Date());
   S.guru.forEach(g => { const r = S.rows[g.id] ||= {}; if (!klas(r)){ r.sd = 'H'; r.full = false; if (today) r.masuk = nowHM(); } });
-  renderDay(); toast('Guru ditandai Hadir.');
+  renderDay(); toast('Guru yang belum diisi ditandai Hadir saat datang');
 };
-$('#tgl').onchange = () => loadDay();
-
+$('#tgl').onchange = loadDay;
 $('#simpan').onclick = async () => {
   const bad = S.guru.find(g => { const r = S.rows[g.id] || {}; return ['I','D'].some(x => r.sd === x || r.sp === x) && !(r.ket || '').trim(); });
   if (bad){
-    toast('Wajib isi keterangan izin/dinas untuk ' + bad.nama);
+    toast('Isi keterangan untuk ' + bad.nama + ' (izin/dinas)');
     const c = document.querySelector(`.g[data-id="${bad.id}"]`);
     c.scrollIntoView({block:'center', behavior:'smooth'}); c.querySelector('.in-k').focus({preventScroll:true});
     return;
@@ -1004,115 +344,51 @@ $('#simpan').onclick = async () => {
   const rows = S.guru.filter(g => klas(S.rows[g.id] || {})).map(g => { const r = S.rows[g.id];
     return {id:g.id, nama:g.nama, sd:r.sd || '', masuk:adaJam(r.sd) ? (r.masuk || '') : '',
       sp:r.full ? r.sd : (r.sp || ''), pulang:(!r.full && adaJam(r.sp)) ? (r.pulang || '') : '', ket:r.ket || ''}; });
-  if (!rows.length) return toast('Belum ada data yang diubah.');
-  const b = $('#simpan'); b.disabled = true; b.textContent = 'Menyinkronkan...';
-  try { 
-    const inputTgl = $('#tgl').value;
-    await api('simpan', {}, {tanggal:inputTgl, rows}); 
-    toast(rows.length + ' data tersimpan'); 
-    
-    S.monthData = S.monthData.filter(m => m.tanggal !== inputTgl).concat(rows.map(r => ({...r, tanggal: inputTgl})));
-    if(inputTgl === $('#dashDateContext').value) updateDashboardStats();
-  }
-  catch(e){ toast('Gagal: ' + e.message); }
-  b.disabled = false; b.textContent = 'Simpan Data Absensi';
+  if (!rows.length) return toast('Belum ada status yang dipilih');
+  const b = $('#simpan'); b.disabled = true; b.textContent = 'Menyimpan…';
+  try { await api('simpan', {}, {tanggal:$('#tgl').value, rows}); toast(rows.length + ' data tersimpan'); }
+  catch(e){ toast('Gagal menyimpan: ' + e.message); }
+  b.disabled = false; b.textContent = 'Simpan absensi';
 };
 
-/* ===== MENU PENGATURAN ===== */
-function renderSettings() {
-   // 1. Kategori & Denda
-   let htmlKat = '';
-   for(let k in CONFIG.kategori) {
-      let cat = CONFIG.kategori[k];
-      htmlKat += `
-      <div style="background:var(--bg); border:1px solid var(--line); padding:16px; border-radius:12px;">
-         <b style="display:block; color:var(--sidebar); margin-bottom:12px; font-size:14px;">${cat.nama}</b>
-         <div class="row" style="margin:0; gap:12px;">
-            <div style="flex:1;">
-               <label class="f">Denda Piket (Rp)</label>
-               <input type="number" id="kat_${k}_p" value="${cat.piket}" class="mono">
-            </div>
-            <div style="flex:1;">
-               <label class="f">Denda Non-Piket (Rp)</label>
-               <input type="number" id="kat_${k}_n" value="${cat.non}" class="mono">
-            </div>
-         </div>
-      </div>`;
-   }
-   $('#setKategori').innerHTML = htmlKat;
-
-   // 2. Jadwal Piket
-   const hariArr = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-   let htmlPiket = '';
-   hariArr.forEach((h, idx) => {
-      const ids = CONFIG.piket[idx + 1] || [];
-      const names = ids.map(id => {
-         const g = S.guru.find(x => x.id === id);
-         return g ? g.nama.split(' ')[0] : id; 
-      }).join(', ');
-      
-      htmlPiket += `<div class="item-ui" style="align-items:center;">
-         <div class="item-ui-info"><b>${h}</b><span style="color:var(--pri); font-weight:600;">${names || 'Kosong'}</span></div>
-         <button class="btn ghost" style="min-height:36px; padding:0 12px; font-size:12px;" onclick="window.openEditPiket(${idx+1}, '${h}')">Edit</button>
-      </div>`;
-   });
-   $('#setPiket').innerHTML = htmlPiket;
-
-   // 3. Kategori Guru
-   let htmlGuru = '';
-   S.guru.forEach(g => {
-       const curCat = CONFIG.guru_kat[g.id] || 'A';
-       let sel = `<select id="gcat_${g.id}" class="search-bar" style="width:100%; margin-top:8px;">`;
-       for(let k in CONFIG.kategori) {
-           sel += `<option value="${k}" ${curCat === k ? 'selected' : ''}>${CONFIG.kategori[k].nama}</option>`;
-       }
-       sel += `</select>`;
-       htmlGuru += `<div class="item-ui" style="background:var(--card); border:1px solid var(--line); padding:16px; border-radius:12px;">
-         <div class="av">${ini(g.nama)}</div>
-         <div class="item-ui-info" style="overflow:hidden;">
-            <b style="white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${esc(g.nama)}</b>
-            ${sel}
-         </div>
-       </div>`;
-   });
-   $('#setGuru').innerHTML = htmlGuru;
+/* ===== SCAN FOTO DAFTAR HADIR ===== */
+function kecil(f){
+  return new Promise((ok, no) => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 1800 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(img.src); ok(c.toDataURL('image/jpeg', .85).split(',')[1]);
+    };
+    img.onerror = () => no(new Error('Foto tidak bisa dibuka'));
+    img.src = URL.createObjectURL(f);
+  });
 }
-
-window.openEditPiket = function(dayIndex, dayName) {
-   let html = `<div class="chips" style="gap:12px;">`;
-   S.guru.forEach(g => {
-      const isChecked = (CONFIG.piket[dayIndex] || []).includes(g.id) ? 'checked' : '';
-      html += `<label class="chip" style="flex:none; width:100%; text-align:left;">
-         <input type="checkbox" value="${g.id}" id="chk_${g.id}" ${isChecked}>
-         <span style="justify-content:flex-start; padding:0 16px;">${esc(g.nama)}</span>
-      </label>`;
-   });
-   html += `</div>
-   <button class="btn" style="width:100%; margin-top:20px;" onclick="window.savePiket(${dayIndex})">Simpan Jadwal ${dayName}</button>`;
-   openModal(`Atur Piket Hari ${dayName}`, html);
-};
-
-window.savePiket = function(dayIndex) {
-   const checks = document.querySelectorAll('#uiModalBody input[type="checkbox"]:checked');
-   CONFIG.piket[dayIndex] = Array.from(checks).map(cb => cb.value);
-   $('#uiModal').classList.remove('show');
-   renderSettings(); 
-};
-
-$('#simpanPengaturan').onclick = () => {
-    for(let k in CONFIG.kategori) {
-        CONFIG.kategori[k].piket = parseInt($(`#kat_${k}_p`).value) || 0;
-        CONFIG.kategori[k].non = parseInt($(`#kat_${k}_n`).value) || 0;
-    }
-    S.guru.forEach(g => {
-        CONFIG.guru_kat[g.id] = $(`#gcat_${g.id}`).value;
-    });
-    
-    localStorage.setItem('absen_config', JSON.stringify(CONFIG));
-    toast('Pengaturan berhasil disimpan!');
-    
-    renderPiketSchedule();
-    updateDashboardStats();
+function terapkan(d){
+  let n = 0; const ragu = new Set(d.ragu || []);
+  d.rows.forEach(x => {
+    if (!x.sd && !x.sp) return; n++;
+    S.rows[x.id] = {sd:x.sd, masuk:x.masuk, sp:x.sp, pulang:x.pulang, ket:x.ket, full: !!x.sd && x.sd !== 'H' && x.sd === x.sp && !x.pulang};
+  });
+  renderDay();
+  document.querySelectorAll('.g').forEach(c => { if (ragu.has(c.dataset.id)) c.classList.add('ragu'); });
+  toast(n ? `${n} guru terisi dari foto${ragu.size ? ', ' + ragu.size + ' perlu dicek' : ''}. Periksa lalu Simpan.` : (d.catatan || 'Tidak ada data yang terbaca'));
+  if (n) $('#list').scrollIntoView({behavior:'smooth'});
+}
+$('#scan').hidden = !FITUR_SCAN;
+$('#scan').onclick = () => $('#foto').click();
+$('#foto').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (!API_URL) return toast('Scan butuh koneksi ke Sheets (isi API_URL dulu)');
+  const pin = sessionStorage.getItem('pin') ?? prompt('PIN scan (kosongkan jika belum diatur)') ?? '';
+  const b = $('#scan'); b.disabled = true; b.textContent = 'Membaca foto… (bisa 10–30 detik)';
+  try {
+    const tgl = $('#tgl').value, hari = new Date(tgl + 'T00:00:00').toLocaleDateString('id-ID', {weekday:'long'});
+    const d = await api('scan', {}, {image: await kecil(f), mime:'image/jpeg', tanggal:tgl, hari, pin});
+    sessionStorage.setItem('pin', pin); terapkan(d);
+  } catch(err){ sessionStorage.removeItem('pin'); toast('Scan gagal: ' + err.message); }
+  b.disabled = false; b.textContent = 'Scan daftar hadir dari foto';
 };
 
 /* ===== LAPORAN ===== */
@@ -1124,73 +400,179 @@ function hariKerja(from, to){
 async function loadRep(){
   const end = new Date(S.rep.y, S.rep.m, 1), {from, to} = periode(end.getFullYear(), end.getMonth());
   const f = new Date(from + 'T00:00:00'), t = new Date(to + 'T00:00:00');
-  $('#pLabel').textContent = `${BLN[end.getMonth()]} ${end.getFullYear()}`;
-  $('#pDate').textContent = `${f.getDate()} ${BLN3[f.getMonth()]} – ${t.getDate()} ${BLN3[t.getMonth()]}`;
-  $('#rep').innerHTML = '<tr><td colspan="9" style="padding:40px; color:var(--mut);">Memuat laporan...</td></tr>';
+  $('#pLabel').innerHTML = `${BLN[end.getMonth()]} ${end.getFullYear()}<small>${f.getDate()} ${BLN3[f.getMonth()]} – ${t.getDate()} ${BLN3[t.getMonth()]}</small>`;
+  $('#rep').innerHTML = '<tr><td colspan="9">Memuat…</td></tr>';
   try {
-    if (!S.guru.length) { S.guru = await api('guru'); renderPiketSchedule(); }
-    const data = await api('absensi', {from, to}); 
-    const hk = hariKerja(from, to) || 1;
-    
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from, to}), hk = hariKerja(from, to) || 1;
     S.repData = S.guru.map(g => {
       const c = Object.fromEntries(KOL.map(k => [k, 0]));
       data.filter(r => r.id === g.id).forEach(r => { const k = klas(r); if (k in c) c[k]++; });
       const sc = KOL.reduce((a, k) => a + c[k] * (BOBOT[k] ?? 0), 0);
       return {nama:g.nama, ...c, pct:Math.min(100, Math.round(sc / hk * 100))};
     });
-    S.repLabel = `${BLN[end.getMonth()]}_${end.getFullYear()}`;
-    $('#rep').innerHTML = S.repData.map(r => `<tr><td>${esc(r.nama)}</td>${KOL.map(k => `<td class="c-${k[0]}"><b>${r[k] || '·'}</b></td>`).join('')}
+    S.repRaw = data; S.repLabel = `${BLN[end.getMonth()]}_${end.getFullYear()}`;
+    $('#rep').innerHTML = S.repData.map(r => `<tr><td>${esc(r.nama)}</td>${KOL.map(k => `<td class="c-${k[0]}">${r[k] || '·'}</td>`).join('')}
       <td><div class="pc"><div class="pb"><i style="width:${r.pct}%"></i></div><b>${r.pct}%</b></div></td></tr>`).join('');
-  } catch(e){ $('#rep').innerHTML = '<tr><td colspan="9" style="color:var(--A)">Gagal memuat: ' + esc(e.message) + '</td></tr>'; }
+  } catch(e){ $('#rep').innerHTML = '<tr><td colspan="9">Gagal memuat: ' + esc(e.message) + '</td></tr>'; }
 }
 $('#prev').onclick = () => { S.rep.m--; loadRep(); };
 $('#next').onclick = () => { S.rep.m++; loadRep(); };
 $('#csv').onclick = () => {
   if (!S.repData) return;
   const q = v => '"' + String(v).replace(/"/g, '""') + '"';
-  const csv = ['Nama Guru,Hadir,Dinas,Izin,Izin Datang,Izin Pulang,Sakit,Alpa,Persentase (%)', ...S.repData.map(r => [q(r.nama), ...KOL.map(k => r[k]), r.pct].join(','))].join('\n');
+  const csv = ['Guru,Hadir,Dinas,Izin,Izin Datang,Izin Pulang,Sakit,Alpa,Kehadiran %', ...S.repData.map(r => [q(r.nama), ...KOL.map(k => r[k]), r.pct].join(','))].join('\n');
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv'})); a.download = `Laporan_${S.repLabel}.csv`; a.click();
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv'})); a.download = `absensi_${S.repLabel}.csv`; a.click();
 };
 
-/* ===== TABS NAVIGASI ===== */
-const tabs = {
-  tD: { id: 'vD', title: 'Dashboard Leaderboard', sub: 'Peringkat kedisiplinan & evaluasi harian' },
-  tA: { id: 'vA', title: 'Absensi Guru', sub: 'Input kehadiran harian' },
-  tL: { id: 'vL', title: 'Laporan & Analitik', sub: 'Rekapitulasi jam kerja & kehadiran' },
-  tS: { id: 'vS', title: 'Pengaturan Sistem', sub: 'Konfigurasi denda, jadwal piket, dan kategori guru' }
-};
-function switchTab(tId) {
-  Object.keys(tabs).forEach(k => {
-    $('#' + k).setAttribute('aria-selected', k === tId);
-    $('#' + tabs[k].id).hidden = (k !== tId);
-  });
-  $('#pageTitle').textContent = tabs[tId].title;
-  $('#todayTitle').textContent = tabs[tId].sub;
-  $('#barA').hidden = (tId !== 'tA');
-  $('#barS').hidden = (tId !== 'tS');
-  
-  if (tId === 'tL') loadRep();
-  if (tId === 'tS') { 
-     // Pastikan data guru sudah dimuat sebelum render setting
-     if (!S.guru.length) { api('guru').then(g => { S.guru = g; renderSettings(); }); } 
-     else { renderSettings(); }
-  }
+/* ===== BANTUAN ===== */
+const mnt = t => /^\d{2}:\d{2}$/.test(t || '') ? +t.slice(0,2) * 60 + +t.slice(3) : null;
+const jamTxt = m => Math.floor(m / 60) + 'j' + pad(m % 60);
+const HR = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+const hari = (a, b) => { const o = []; for (let d = new Date(a + 'T00:00:00'); iso(d) <= b; d.setDate(d.getDate()+1)) o.push(iso(d)); return o; };
+const kerja = d => HARI_KERJA.includes(new Date(d + 'T00:00:00').getDay());
+const lbl = (end, f, t) => { f = new Date(f + 'T00:00:00'); t = new Date(t + 'T00:00:00'); return `${BLN[end.getMonth()]} ${end.getFullYear()}<small>${f.getDate()} ${BLN3[f.getMonth()]} – ${t.getDate()} ${BLN3[t.getMonth()]}</small>`; };
+function dl(nama, baris){
+  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + baris.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'}));
+  a.download = nama; a.click();
 }
-$('#tD').onclick = () => switchTab('tD');
-$('#tA').onclick = () => switchTab('tA');
-$('#tL').onclick = () => switchTab('tL');
-$('#tS').onclick = () => switchTab('tS');
 
-loadDay();
-loadDashboardData();
+/* ===== DASBOR ===== */
+async function loadDash(){
+  const t0 = new Date(), td = iso(t0), e = new Date(t0.getFullYear(), t0.getMonth() + (t0.getDate() >= 26 ? 1 : 0), 1), {from, to} = periode(e.getFullYear(), e.getMonth());
+  $('#dash').innerHTML = '<div class="sk"></div><div class="sk"></div>';
+  try {
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from, to}), N = S.guru.length || 1, libur = !kerja(td);
+    const kl = (id, d) => { const r = data.find(x => x.id === id && x.tanggal === d); return r ? klas(r) : null; };
+    const c = {H:0, D:0, X:0, B:0}, telat = [], belum = [];
+    S.guru.forEach(g => {
+      const k = kl(g.id, td), r = data.find(x => x.id === g.id && x.tanggal === td);
+      if (!k){ c.B++; if (!libur) belum.push(g.nama); } else if (k === 'H' || k === 'D') c[k]++; else c.X++;
+      if (r && mnt(r.masuk) > mnt(JAM_MASUK)) telat.push(`${g.nama} (${r.masuk})`);
+    });
+    const tr = hari(from, td < to ? td : to).filter(kerja).slice(-7).map(d => ({d, p:Math.round(S.guru.filter(g => ['H','D'].includes(kl(g.id, d))).length / N * 100)}));
+    const bars = tr.length ? `<svg class="trend" viewBox="0 0 ${tr.length * 40} 100" role="img" aria-label="Tren kehadiran">${tr.map((x, i) => `<rect x="${i*40+8}" y="${80 - x.p*.6}" width="24" height="${Math.max(2, x.p*.6)}" rx="6" fill="${x.d === td ? 'var(--gold)' : 'var(--pri)'}"/><text x="${i*40+20}" y="${76 - x.p*.6}">${x.p}%</text><text x="${i*40+20}" y="95">${+x.d.slice(8)}/${+x.d.slice(5,7)}</text>`).join('')}</svg>` : '<p class="mut">Belum ada data.</p>';
+    const pct = Math.round((c.H + c.D) / N * 100), li = (a, kosong) => a.length ? a.map(x => `<li>${esc(x)}</li>`).join('') : `<li class="mut">${kosong}</li>`;
+    $('#dash').innerHTML = `
+      <div class="card hero rise"><svg class="ring" viewBox="0 0 100 100" role="img" aria-label="Kehadiran ${pct} persen"><circle class="tr" cx="50" cy="50" r="42"/><circle class="rg" cx="50" cy="50" r="42" style="stroke-dashoffset:${264 * (1 - pct/100)}"/><text x="50" y="57" text-anchor="middle">${pct}%</text></svg>
+        <div><b>Kehadiran hari ini</b><p>${c.H + c.D} dari ${N} guru hadir atau dinas</p></div></div>
+      <div class="kp">${[['H','Hadir',c.H],['D','Dinas',c.D],['A','Izin/Sakit/Alpa',c.X],['I','Belum diisi',c.B]].map(([k, l, v], i) => `<div class="kc rise" style="--i:${i+1};--c:var(--${k})"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+      <div class="card rise" style="--i:5"><h3>Tren 7 hari kerja</h3>${bars}</div>
+      <div class="card rise" style="--i:6"><h3>Perlu perhatian</h3><h4>Belum absen hari ini</h4><ul>${li(belum, libur ? 'Hari ini bukan hari kerja' : 'Semua sudah terisi')}</ul><h4>Terlambat (lewat ${JAM_MASUK})</h4><ul>${li(telat, 'Tidak ada')}</ul></div>
+      <button class="btn" id="goA" style="width:100%">Isi absensi hari ini</button>`;
+    $('#goA').onclick = () => tab('A');
+  } catch(err){ $('#dash').innerHTML = '<div class="card">Gagal memuat: ' + esc(err.message) + '</div>'; }
+}
 
-  // Cara aman mengambil tanggal lokal YYYY-MM-DD di JavaScript tanpa bergeser zona waktu
-const getLocalISODate = (d = new Date()) => {
-  const offset = d.getTimezoneOffset();
-  const localDate = new Date(d.getTime() - (offset * 60 * 1000));
-  return localDate.toISOString().split('T')[0];
-};
+/* ===== TRACKER KEHADIRAN ===== */
+async function loadTrk(){
+  const end = new Date(S.rep.y, S.rep.m, 1), {from, to} = periode(end.getFullYear(), end.getMonth());
+  $('#tLabel').innerHTML = lbl(end, from, to); $('#trk').innerHTML = '<tr><td>Memuat…</td></tr>';
+  try {
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from, to}), ds = hari(from, to), m = {};
+    data.forEach(r => m[r.id + '|' + r.tanggal] = r);
+    $('#trk').innerHTML = `<thead><tr><th>Guru</th>${ds.map(d => `<th>${+d.slice(8)}</th>`).join('')}</tr></thead><tbody>` + S.guru.map(g => `<tr><td>${esc(g.nama)}</td>${ds.map(d => {
+      const r = m[g.id + '|' + d], k = r ? klas(r) : null, we = !kerja(d);
+      return `<td><i class="hc k-${k || 0}${we ? ' we' : ''}" data-t="${esc(g.nama)} · ${d.slice(8)}/${d.slice(5,7)} · ${k ? LBL[k] + (r.masuk ? ' ' + r.masuk : '') + (r.pulang ? '–' + r.pulang : '') : (we ? 'Libur' : 'Belum diisi')}"></i></td>`;
+    }).join('')}</tr>`).join('') + '</tbody>';
+  } catch(err){ $('#trk').innerHTML = '<tr><td>Gagal memuat: ' + esc(err.message) + '</td></tr>'; }
+}
+$('#trk').onclick = e => { const i = e.target.closest('.hc'); if (i) toast(i.dataset.t); };
+$('#tprev').onclick = () => { S.rep.m--; loadTrk(); };
+$('#tnext').onclick = () => { S.rep.m++; loadTrk(); };
+
+/* ===== JAM KERJA MINGGUAN ===== */
+{ const m = new Date(); m.setDate(m.getDate() - ((m.getDay() + 6) % 7)); S.wk = iso(m); }
+async function loadWk(){
+  const mon = new Date(S.wk + 'T00:00:00');
+  const days = [0,1,2,3,4,5,6].map(i => { const d = new Date(mon); d.setDate(d.getDate() + i); return d; }).filter(d => HARI_KERJA.includes(d.getDay()));
+  const from = iso(days[0]), to = iso(days[days.length - 1]), a = days[0], b = days[days.length - 1];
+  $('#wLabel').innerHTML = `Minggu ${a.getDate()} ${BLN3[a.getMonth()]}<small>s.d. ${b.getDate()} ${BLN3[b.getMonth()]} ${b.getFullYear()}</small>`;
+  $('#wb').innerHTML = '<tr><td colspan="9">Memuat…</td></tr>';
+  try {
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from, to}), target = JAM_TARGET * 60 * days.length;
+    S.wkData = {days: days.map(iso), rows: S.guru.map(g => {
+      let tot = 0, telat = 0;
+      const cells = days.map(d => {
+        const r = data.find(x => x.id === g.id && x.tanggal === iso(d)); if (!r) return {t:'·'};
+        const x = mnt(r.masuk), y = mnt(r.pulang), k = klas(r), late = x != null && x > mnt(JAM_MASUK);
+        if (late) telat++;
+        if (x != null && y != null && y > x){ tot += y - x; return {t:jamTxt(y - x), k, late}; }
+        return {t:k || '·', k, late};
+      });
+      return {nama:g.nama, cells, tot, telat, pct:Math.min(100, Math.round(tot / target * 100))};
+    })};
+    $('#wh').innerHTML = `<tr><th>Guru</th>${days.map(d => `<th>${HR[d.getDay()]}<br>${d.getDate()}/${d.getMonth()+1}</th>`).join('')}<th>Total jam</th><th>Telat</th></tr>`;
+    $('#wb').innerHTML = S.wkData.rows.map(r => `<tr><td>${esc(r.nama)}</td>${r.cells.map(c => `<td class="${c.k ? 'c-' + c.k[0] : ''}">${c.t}${c.late ? '<i class="lt" title="Terlambat"></i>' : ''}</td>`).join('')}
+      <td><div class="pc"><div class="pb"><i style="width:${r.pct}%"></i></div><b>${jamTxt(r.tot)}</b></div></td><td>${r.telat || '·'}</td></tr>`).join('');
+  } catch(err){ $('#wb').innerHTML = '<tr><td colspan="9">Gagal memuat: ' + esc(err.message) + '</td></tr>'; }
+}
+const geserMinggu = n => { const d = new Date(S.wk + 'T00:00:00'); d.setDate(d.getDate() + n * 7); S.wk = iso(d); loadWk(); };
+$('#wprev').onclick = () => geserMinggu(-1); $('#wnext').onclick = () => geserMinggu(1);
+$('#wcsv').onclick = () => { const w = S.wkData; if (w) dl(`jam_kerja_mingguan_${w.days[0]}.csv`, [['Guru', ...w.days, 'Total jam', 'Telat'], ...w.rows.map(r => [r.nama, ...r.cells.map(c => c.t), (r.tot / 60).toFixed(1), r.telat])]); };
+$('#csv2').onclick = () => { if (S.repRaw) dl(`absensi_harian_${S.repLabel}.csv`, [['Tanggal','Guru','Status datang','Jam datang','Status pulang','Jam pulang','Keterangan'], ...S.repRaw.map(r => [r.tanggal, r.nama, LBL[r.sd] || '', r.masuk, LBL[r.sp] || '', r.pulang, r.ket])]); };
+
+/* ===== GURU & PROFIL ===== */
+const jm = m => m == null ? '–' : pad(Math.floor(m / 60)) + ':' + pad(m % 60);
+function statGuru(data, id, hk){
+  const rs = data.filter(r => r.id === id), c = Object.fromEntries(KOL.map(k => [k, 0])), ts = [], ws = []; let telat = 0;
+  rs.forEach(r => {
+    const k = klas(r), a = mnt(r.masuk), b = mnt(r.pulang); if (k in c) c[k]++;
+    if (a != null){ ts.push(a); if (a > mnt(JAM_MASUK)) telat++; }
+    if (a != null && b != null && b > a) ws.push(b - a);
+  });
+  const avg = x => x.length ? Math.round(x.reduce((p, q) => p + q, 0) / x.length) : null;
+  const sc = KOL.reduce((p, k) => p + c[k] * (BOBOT[k] ?? 0), 0);
+  return {c, rs, telat, datang:avg(ts), kerja:avg(ws), pct:Math.min(100, Math.round(sc / hk * 100))};
+}
+async function loadGuru(){
+  const end = new Date(S.rep.y, S.rep.m, 1), {from, to} = periode(end.getFullYear(), end.getMonth());
+  $('#gLabel').innerHTML = lbl(end, from, to); $('#gl').innerHTML = '<div class="sk"></div><div class="sk"></div>';
+  try {
+    if (!S.guru.length) S.guru = await api('guru');
+    const data = await api('absensi', {from, to}), hk = hariKerja(from, to) || 1;
+    S.gData = {data, from, to, hk};
+    $('#gl').innerHTML = S.guru.map((g, i) => `<button class="gc rise" style="--i:${Math.min(i, 6)}" data-id="${esc(g.id)}"><span class="av" aria-hidden="true">${esc(ini(g.nama))}</span><span class="gn"><b>${esc(g.nama)}</b><small>${esc(g.jabatan || 'Guru')}</small></span><span class="gp">${statGuru(data, g.id, hk).pct}%</span></button>`).join('');
+  } catch(err){ $('#gl').innerHTML = '<div class="card">Gagal memuat: ' + esc(err.message) + '</div>'; }
+}
+$('#gl').onclick = e => { const b = e.target.closest('.gc'); if (b) bukaProfil(b.dataset.id); };
+$('#gprev').onclick = () => { S.rep.m--; loadGuru(); };
+$('#gnext').onclick = () => { S.rep.m++; loadGuru(); };
+function bukaProfil(id){
+  const g = S.guru.find(x => x.id === id), {data, from, to, hk} = S.gData, s = statGuru(data, id, hk), m = {};
+  s.rs.forEach(r => m[r.tanggal] = r);
+  const ds = hari(from, to), off = (new Date(from + 'T00:00:00').getDay() + 6) % 7, c = s.c;
+  const wa = String(g.no_hp || '').replace(/\D/g, '').replace(/^0/, '62').replace(/^8/, '628');
+  const riw = ds.filter(d => m[d] && ['I','ID','IP','S','A','D'].includes(klas(m[d]))).map(d => `<li>${d.slice(8)}/${d.slice(5,7)} · <b>${LBL[klas(m[d])]}</b> — ${esc(m[d].ket || 'tanpa keterangan')}</li>`);
+  $('#prof').innerHTML = `
+    <button class="btn ghost" id="pback">‹ Semua guru</button>
+    <div class="card hero rise" style="margin-top:12px"><span class="av big" aria-hidden="true">${esc(ini(g.nama))}</span>
+      <div><b>${esc(g.nama)}</b><p>${esc(g.jabatan || 'Guru')} · ID ${esc(g.id)}${g.id_mesin ? ' · mesin ' + esc(g.id_mesin) : ''}</p></div><div class="pct">${s.pct}%</div></div>
+    ${wa ? `<a class="btn ghost" href="https://wa.me/${wa}" target="_blank" rel="noopener">Hubungi lewat WhatsApp</a>` : ''}
+    <div class="kp">${[['H','Hadir',c.H],['D','Dinas',c.D],['I','Izin',c.I + c.ID + c.IP],['S','Sakit',c.S],['A','Alpa',c.A],['I','Terlambat',s.telat]].map(([k, l, v], i) => `<div class="kc rise" style="--i:${i+1};--c:var(--${k})"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+    <div class="card"><h3>Ringkasan periode</h3><p style="margin:0">Rata-rata datang <b>${jm(s.datang)}</b> · rata-rata jam kerja <b>${s.kerja == null ? '–' : jamTxt(s.kerja)}</b></p></div>
+    <div class="card"><h3>Kalender kehadiran</h3><div class="hm">${['Sen','Sel','Rab','Kam','Jum','Sab','Min'].map(h => `<b class="hh">${h}</b>`).join('')}${'<i></i>'.repeat(off)}${ds.map(d => { const r = m[d], k = r ? klas(r) : null;
+      return `<span class="hd${k ? ' k-' + k : ''}${kerja(d) ? '' : ' we'}" title="${d}${r ? ' · ' + LBL[k] : ''}">${+d.slice(8)}</span>`; }).join('')}</div></div>
+    <div class="card"><h3>Izin, sakit, dinas, alpa</h3><ul>${riw.length ? riw.join('') : '<li class="mut">Tidak ada pada periode ini</li>'}</ul></div>`;
+  $('#vG').hidden = true; $('#vP').hidden = false; scrollTo(0, 0);
+  $('#pback').onclick = () => { $('#vP').hidden = true; $('#vG').hidden = false; };
+}
+
+/* ===== NAVIGASI TAB ===== */
+const TABS = {D:loadDash, A:() => { if (!S.dayLoaded){ S.dayLoaded = 1; loadDay(); } }, T:loadTrk, G:loadGuru, W:loadWk, L:loadRep};
+function tab(k){
+  $('#vP').hidden = true;
+  for (const x in TABS){ $('#v' + x).hidden = x !== k; $('#t' + x).setAttribute('aria-selected', x === k); }
+  $('#bar').hidden = k !== 'A'; TABS[k](); $('#t' + k).scrollIntoView({inline:'center', block:'nearest'});
+}
+document.querySelectorAll('.seg button').forEach(b => b.onclick = () => tab(b.id[1]));
+tab('D');
 </script>
 </body>
 </html>
