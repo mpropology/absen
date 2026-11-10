@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173d30">
+  <title>Absensi Sekolah — Tampilan Premium</title>
+  <style>
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#f5f7f4;font:14px/1.5 system-ui,sans-serif}.frame{width:100%;height:100%;border:0;display:block}.notice{position:fixed;z-index:20;left:50%;top:12px;transform:translateX(-50%);padding:10px 14px;border:1px solid #e8d99e;border-radius:12px;background:#fff9e8;color:#654f0d;font:600 12px/1.4 system-ui,sans-serif;box-shadow:0 6px 24px #173d3020;max-width:calc(100% - 24px)}.notice[hidden]{display:none}
+  </style>
+</head>
+<body>
+  <div class="notice" id="notice" role="status" hidden>UI premium memuat aplikasi absensi. Jika halaman tidak tampil, buka halaman utama terlebih dahulu.</div>
+  <iframe class="frame" id="app" title="Aplikasi absensi sekolah" src="./index.html"></iframe>
+  <script>
+    const premiumCSS = `
+      :root{color-scheme:light;--bg:#f5f7f4;--card:#fff;--ink:#202923;--mut:#758078;--pri:#2d6a4f;--pri2:#173d30;--gold:#c9a227;--onpri:#fff;--line:#e7ebe6;--soft:#eaf2ec;--H:#2d6a4f;--I:#a17b17;--S:#466b9a;--A:#b94a48;--D:#6756a5;--r:18px;--ease-out:cubic-bezier(.23,1,.32,1)}
+      body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+      header{position:relative;padding:22px max(26px,calc((100vw - 1200px)/2 + 26px)) 54px;border-radius:0 0 28px 28px;border-bottom:3px solid var(--gold);background:linear-gradient(125deg,#173d30,#245943 64%,#2d6a4f);box-shadow:0 12px 28px #173d301c}
+      .top{max-width:1200px;min-height:44px}.top h1{font-size:21px;letter-spacing:-.04em}.sub{color:#e1ebe4}.pill{border:1px solid #ffffff3d;background:#ffffff18;padding:8px 13px;font-weight:700}
+      main{max-width:1260px;margin:-34px auto 0;padding:0 24px}
+      .seg{position:sticky;top:10px;z-index:7;display:flex;gap:6px;overflow-x:auto;padding:6px;background:#fff;border:1px solid #e8ece8;border-radius:16px;box-shadow:0 8px 25px #173d3012;margin-bottom:18px;scrollbar-width:none}
+      .seg button{min-height:42px;padding:0 17px;border-radius:11px;font-size:13px;font-weight:700;color:#69756d;white-space:nowrap}.seg button[aria-selected=true]{background:var(--pri2);color:white;box-shadow:0 5px 13px #173d3028}
+      .card{border:1px solid #e8ece8;border-radius:18px;background:#fff;padding:17px;box-shadow:0 8px 26px #173d300a;margin-bottom:14px}
+      .hero{border:0;border-bottom:3px solid var(--gold);background:linear-gradient(125deg,#173d30,#2d6a4f);box-shadow:0 10px 24px #173d3020}
+      .kc{border:1px solid var(--line);border-left:4px solid var(--c);border-radius:16px;box-shadow:0 5px 18px #173d3008}.kp{gap:12px}
+      .btn{min-height:44px;border-radius:12px;font-weight:700;box-shadow:0 3px 10px #173d300c}.btn:not(.ghost){box-shadow:0 6px 15px #173d3020}.btn.ghost{border:1px solid #dfe9e1;background:#edf4ee;color:#285d43}
+      input[type=date],input[type=time],input[type=text]{border-radius:12px;border-color:#e1e7e1;background:#fbfcfb}
+      .g{transition:box-shadow .2s,border-color .2s}.g:hover{border-color:#c8d8cc;box-shadow:0 8px 20px #173d3010}.av{background:#eaf2ec;color:#245943}.chips{gap:7px}.chip span{border-radius:10px;background:#fcfdfc}.chip.H input:checked+span{background:#2d6a4f}.chip.I input:checked+span{background:#a17b17}.chip.S input:checked+span{background:#466b9a}.chip.A input:checked+span{background:#b94a48}.chip.D input:checked+span{background:#6756a5}
+      .bar{background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid #e5eae5;box-shadow:0 -8px 25px #173d300b}.bar .in{max-width:1200px}.bar .btn{min-height:48px}
+      .nav{border-radius:15px}.tw{border-color:#e5eae5}th{background:#f5f8f5}td:first-child{background:#fff}
+      :focus-visible{outline:3px solid #c9a227;outline-offset:3px}
+      @media(min-width:1050px){main{padding-left:34px;padding-right:34px}.seg{gap:8px}.seg button{padding-inline:19px}}
+      @media(max-width:700px){header{padding:calc(17px + env(safe-area-inset-top)) 16px 51px;border-radius:0 0 22px 22px}.top h1{font-size:18px}.pill{font-size:10px;padding:7px 10px}main{padding:0 12px}.seg{top:5px;border-radius:14px;margin-bottom:13px}.seg button{min-height:42px;padding:0 14px;font-size:12px}.card{padding:13px;border-radius:15px}.kp{gap:8px}.kc{padding:11px}.bar{padding:9px 12px calc(9px + env(safe-area-inset-bottom))}}
+      @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    `;
+    const frame=document.querySelector('#app'),notice=document.querySelector('#notice');
+    frame.addEventListener('load',()=>{
+      try{
+        const doc=frame.contentDocument;
+        if(!doc||!doc.head)throw new Error('App tidak tersedia');
+        if(!doc.querySelector('#premium-brand-style')){
+          const style=doc.createElement('style');style.id='premium-brand-style';style.textContent=premiumCSS;doc.head.appendChild(style);
+        }
+        notice.hidden=true;
+      }catch(error){notice.hidden=false}
+    });
+  </script>
+</body>
+</html>
